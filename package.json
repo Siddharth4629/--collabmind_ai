@@ -1,0 +1,26 @@
+{
+  "name": "collabmind-workspace",
+  "version": "1.0.0",
+  "description": "CollabMind Real-Time AI Collaborative Project Management Platform workspace root",
+  "main": "index.js",
+  "scripts": {
+    "install-all": "npm install --legacy-peer-deps && npm install --prefix server --legacy-peer-deps && npm install --prefix client --legacy-peer-deps",
+    "server": "npm run dev --prefix server",
+    "client": "npm run dev --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "seed": "node server/seed.js"
+  },
+  "keywords": [
+    "collaboration",
+    "project-management",
+    "ai",
+    "realtime",
+    "react",
+    "express"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

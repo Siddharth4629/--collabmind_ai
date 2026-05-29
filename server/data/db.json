@@ -1,0 +1,1651 @@
+{
+  "users": [
+    {
+      "_id": "fc8314b4f5e50d13",
+      "createdAt": "2026-05-22T12:53:57.085Z",
+      "updatedAt": "2026-05-22T12:53:57.085Z",
+      "name": "Sarah Jenkins (Admin)",
+      "email": "admin@projecthub.com",
+      "password": "$2a$10$CFH7hLRrJfnoHneJBqYqdu7gLFtQePFkWaifXL6T6H6du8X.HR/De",
+      "role": "Admin"
+    },
+    {
+      "_id": "33ef8475b772b2e2",
+      "createdAt": "2026-05-22T12:53:57.191Z",
+      "updatedAt": "2026-05-22T12:53:57.191Z",
+      "name": "Alex Rivera (Developer)",
+      "email": "demo@projecthub.com",
+      "password": "$2a$10$jiiioEoM0v0pv6n4odH31O6CuaT66qv2jidhoklvfFailQKa3W0dW",
+      "role": "Member"
+    },
+    {
+      "_id": "a8829e584114d8bd",
+      "createdAt": "2026-05-22T12:53:57.292Z",
+      "updatedAt": "2026-05-22T12:53:57.292Z",
+      "name": "David Miller (Stakeholder)",
+      "email": "viewer@projecthub.com",
+      "password": "$2a$10$tu4viXh5z1ccno39wipvQe8nfOgNNDDhW5pm6e9LK2CmzSVqwW/VC",
+      "role": "Viewer"
+    },
+    {
+      "_id": "a1b0b47021e11cda",
+      "createdAt": "2026-05-22T12:54:08.425Z",
+      "updatedAt": "2026-05-22T12:54:08.425Z",
+      "name": "admin",
+      "email": "another@test.com",
+      "password": "$2a$10$R.3ZYO0SgF8d3ZOeOLKNVueHgTV42Rir6D3lAUoy3QGrk.NWRtzeC",
+      "role": "Admin"
+    },
+    {
+      "_id": "84d532afc47df56f",
+      "createdAt": "2026-05-27T06:08:14.985Z",
+      "updatedAt": "2026-05-27T06:08:14.985Z",
+      "name": "Siddharth ",
+      "email": "siddharthsarda742@gmail.com",
+      "password": "$2a$10$5dfGo3R6HOkiCX4zsgDxver2o9UC1ffGo.afE8QpGHQP4reHxXVSW",
+      "role": "Admin"
+    },
+    {
+      "_id": "7498126800e79160",
+      "createdAt": "2026-05-27T06:08:51.593Z",
+      "updatedAt": "2026-05-27T06:08:51.593Z",
+      "name": "Siddharth",
+      "email": "siddharthsarda3101@gmail.com",
+      "password": "$2a$10$Ubt8f7CufJK318i9mW3g6u4uJeE7gnGnNvXK2VCuJppyKze1IsTwi",
+      "role": "Member"
+    }
+  ],
+  "projects": [
+    {
+      "_id": "149877fa76815446",
+      "createdAt": "2026-05-22T12:53:57.293Z",
+      "updatedAt": "2026-05-28T02:27:49.607Z",
+      "name": "CollabMind Platform Launch",
+      "description": "Building a real-time collaborative workspace featuring dynamic whiteboard sketches, interactive Kanban boards, and Gemini API project ideation.",
+      "owner": "fc8314b4f5e50d13",
+      "deadline": "2026-06-05T12:53:57.292Z",
+      "status": "active",
+      "budget": {
+        "total": 25000,
+        "spent": 5750
+      },
+      "members": [
+        {
+          "user": "fc8314b4f5e50d13",
+          "role": "Admin"
+        },
+        {
+          "user": "33ef8475b772b2e2",
+          "role": "Member"
+        },
+        {
+          "user": "a8829e584114d8bd",
+          "role": "Viewer"
+        }
+      ],
+      "expenses": [
+        "exp1",
+        "exp2",
+        "e9f8d329"
+      ]
+    },
+    {
+      "_id": "9abca347f9f0966d",
+      "createdAt": "2026-05-22T12:56:26.765Z",
+      "updatedAt": "2026-05-27T08:31:59.551Z",
+      "name": "impact training ",
+      "description": "to design a project",
+      "owner": "fc8314b4f5e50d13",
+      "deadline": "2026-05-30",
+      "status": "planning",
+      "budget": {
+        "total": 100,
+        "spent": 46
+      },
+      "members": [
+        {
+          "user": "fc8314b4f5e50d13",
+          "role": "Admin"
+        }
+      ],
+      "expenses": [
+        "01c3de58",
+        "556f1ff5",
+        "cb08d2a6",
+        "6726f09e",
+        "dc7fd6e4"
+      ]
+    },
+    {
+      "_id": "5d0b67f138151a76",
+      "createdAt": "2026-05-23T02:17:53.974Z",
+      "updatedAt": "2026-05-27T06:09:09.559Z",
+      "name": "training ",
+      "description": "practice ",
+      "owner": "fc8314b4f5e50d13",
+      "deadline": "2006-05-28",
+      "status": "planning",
+      "budget": {
+        "total": 50,
+        "spent": 0
+      },
+      "members": [
+        {
+          "user": "fc8314b4f5e50d13",
+          "role": "Admin"
+        },
+        {
+          "user": "7498126800e79160",
+          "role": "Member"
+        }
+      ]
+    }
+  ],
+  "tasks": [
+    {
+      "_id": "d6248768544805e9",
+      "createdAt": "2026-05-22T12:53:57.293Z",
+      "updatedAt": "2026-05-22T12:55:02.659Z",
+      "title": "Design System Architecture",
+      "description": "Outline the REST endpoint structures, Socket.IO message payloads, and MongoDB schema relationships.",
+      "status": "Todo",
+      "priority": "High",
+      "project": "149877fa76815446",
+      "assignee": "33ef8475b772b2e2",
+      "dueDate": "2026-05-25T12:53:57.293Z",
+      "order": 0,
+      "subtasks": [
+        {
+          "title": "Draft schema diagrams",
+          "isCompleted": true
+        },
+        {
+          "title": "Create REST mapping table",
+          "isCompleted": true
+        },
+        {
+          "title": "Define websocket message shapes",
+          "isCompleted": true
+        }
+      ],
+      "comments": [
+        "6cddfec5"
+      ]
+    },
+    {
+      "_id": "e53578ce1d7a9f58",
+      "createdAt": "2026-05-22T12:53:57.294Z",
+      "updatedAt": "2026-05-22T12:53:57.294Z",
+      "title": "Configure JWT & Role-Based guards",
+      "description": "Implement backend authentication middleware and React protected routes filtering navigation links.",
+      "status": "Todo",
+      "priority": "Medium",
+      "project": "149877fa76815446",
+      "assignee": "fc8314b4f5e50d13",
+      "dueDate": "2026-05-27T12:53:57.294Z",
+      "order": 1,
+      "subtasks": [
+        {
+          "title": "Configure JWT signed tokens response",
+          "isCompleted": true
+        },
+        {
+          "title": "Create checkProjectAccess middlewares",
+          "isCompleted": true
+        },
+        {
+          "title": "Build React client contexts",
+          "isCompleted": false
+        }
+      ]
+    },
+    {
+      "_id": "d95b24420b99b79f",
+      "createdAt": "2026-05-22T12:53:57.294Z",
+      "updatedAt": "2026-05-22T12:55:12.806Z",
+      "title": "Real-time Whiteboard Canvas Sync",
+      "description": "Integrate HTML5 Canvas drawing events and broadcast line strokes to other project users via Socket.IO.",
+      "status": "InProgress",
+      "priority": "High",
+      "project": "149877fa76815446",
+      "assignee": "33ef8475b772b2e2",
+      "dueDate": "2026-05-23T12:53:57.294Z",
+      "order": 0,
+      "subtasks": [
+        {
+          "title": "Setup Mouse coordinates tracker",
+          "isCompleted": true
+        },
+        {
+          "title": "Bind drawings to socket broadcasts",
+          "isCompleted": true
+        },
+        {
+          "title": "Implement canvas shapes controls (circle, square)",
+          "isCompleted": false
+        }
+      ],
+      "comments": [
+        "5584f7cf"
+      ]
+    },
+    {
+      "_id": "87f3f2aa5069d3b8",
+      "createdAt": "2026-05-22T12:53:57.295Z",
+      "updatedAt": "2026-05-22T12:53:57.295Z",
+      "title": "Connect Gemini Brainstorming API",
+      "description": "Mount generative models routes that analyze project metadata and user prompts to suggest project milestones.",
+      "status": "Review",
+      "priority": "High",
+      "project": "149877fa76815446",
+      "assignee": "33ef8475b772b2e2",
+      "dueDate": "2026-05-21T12:53:57.295Z",
+      "order": 0,
+      "subtasks": [
+        {
+          "title": "Register Gemini API Developer Key",
+          "isCompleted": true
+        },
+        {
+          "title": "Implement post-route parser controllers",
+          "isCompleted": true
+        },
+        {
+          "title": "Build front-end prompt dialog input",
+          "isCompleted": true
+        }
+      ]
+    },
+    {
+      "_id": "a4471ae78e8548f5",
+      "createdAt": "2026-05-22T12:53:57.295Z",
+      "updatedAt": "2026-05-22T12:53:57.295Z",
+      "title": "Initialize Express + React project base",
+      "description": "Configure standard folders layout, Vite compiler settings, Tailwind CSS, and server node scripts.",
+      "status": "Done",
+      "priority": "Low",
+      "project": "149877fa76815446",
+      "assignee": "fc8314b4f5e50d13",
+      "dueDate": "2026-05-16T12:53:57.295Z",
+      "order": 0,
+      "subtasks": [
+        {
+          "title": "Run create-vite client folder scaffold",
+          "isCompleted": true
+        },
+        {
+          "title": "Configure Tailwind layout imports",
+          "isCompleted": true
+        },
+        {
+          "title": "Create node package.json scripts",
+          "isCompleted": true
+        }
+      ]
+    },
+    {
+      "_id": "dfb16d24c1cad130",
+      "createdAt": "2026-05-22T14:19:35.573Z",
+      "updatedAt": "2026-05-27T08:30:28.148Z",
+      "title": "Launch Social Media Campaign",
+      "description": "[Marketing] Draft 5 release announcements highlighting core features and schedule posts on LinkedIn and Twitter.",
+      "status": "Done",
+      "priority": "Medium",
+      "project": "9abca347f9f0966d",
+      "assignee": null,
+      "dueDate": null,
+      "order": 0,
+      "subtasks": [],
+      "comments": [
+        "ddda578e"
+      ]
+    },
+    {
+      "_id": "2d625cd176f28e95",
+      "createdAt": "2026-05-22T14:19:41.198Z",
+      "updatedAt": "2026-05-27T08:30:33.650Z",
+      "title": "Collect Beta User Feedback",
+      "description": "[Research] Distribute feedback surveys to initial testers to gather testimonials and identify usability issues.",
+      "status": "InProgress",
+      "priority": "Low",
+      "project": "9abca347f9f0966d",
+      "assignee": null,
+      "dueDate": null,
+      "order": 0,
+      "subtasks": [],
+      "comments": [
+        "83dd0a3a"
+      ]
+    },
+    {
+      "_id": "0cfdf2334e35deec",
+      "createdAt": "2026-05-22T14:19:43.422Z",
+      "updatedAt": "2026-05-27T08:30:35.086Z",
+      "title": "Setup Product Landing Page",
+      "description": "[Design] Design a high-converting landing page with registration forms, screenshots, and call-to-action buttons.",
+      "status": "Review",
+      "priority": "High",
+      "project": "9abca347f9f0966d",
+      "assignee": null,
+      "dueDate": null,
+      "order": 0,
+      "subtasks": []
+    },
+    {
+      "_id": "4f90e2f8ead9d54d",
+      "createdAt": "2026-05-22T14:19:44.518Z",
+      "updatedAt": "2026-05-27T08:30:36.555Z",
+      "title": "Define Target Customer Profile",
+      "description": "[Marketing] Analyze market needs related to impact training  to create demographic sheets representing early adopters.",
+      "status": "InProgress",
+      "priority": "High",
+      "project": "9abca347f9f0966d",
+      "assignee": null,
+      "dueDate": null,
+      "order": 1,
+      "subtasks": []
+    }
+  ],
+  "whiteboards": [
+    {
+      "_id": "31abce92365274ea",
+      "createdAt": "2026-05-22T12:53:57.301Z",
+      "updatedAt": "2026-05-22T12:55:23.641Z",
+      "project": "149877fa76815446",
+      "elements": [
+        {
+          "id": "el-1",
+          "type": "rectangle",
+          "x": 150,
+          "y": 100,
+          "width": 200,
+          "height": 120,
+          "color": "#10b981",
+          "lineWidth": 4,
+          "fill": false
+        },
+        {
+          "id": "el-2",
+          "type": "text",
+          "x": 180,
+          "y": 160,
+          "text": "Backend Server",
+          "color": "#f8fafc",
+          "fontSize": 18
+        },
+        {
+          "id": "el-3",
+          "type": "line",
+          "points": [
+            350,
+            160,
+            480,
+            160
+          ],
+          "color": "#64748b",
+          "lineWidth": 3
+        },
+        {
+          "id": "el-4",
+          "type": "rectangle",
+          "x": 480,
+          "y": 100,
+          "width": 200,
+          "height": 120,
+          "color": "#0284c7",
+          "lineWidth": 4,
+          "fill": false
+        },
+        {
+          "id": "el-5",
+          "type": "text",
+          "x": 515,
+          "y": 160,
+          "text": "React Client",
+          "color": "#f8fafc",
+          "fontSize": 18
+        },
+        {
+          "id": "41s1ahp",
+          "type": "line-draw",
+          "points": [
+            {
+              "x": 196,
+              "y": 109
+            },
+            {
+              "x": 211,
+              "y": 104
+            },
+            {
+              "x": 216,
+              "y": 103
+            },
+            {
+              "x": 222,
+              "y": 103
+            },
+            {
+              "x": 228,
+              "y": 103
+            }
+          ],
+          "color": "#10b981",
+          "lineWidth": 4
+        },
+        {
+          "id": "xyc0p9i",
+          "type": "line-draw",
+          "points": [
+            {
+              "x": 129,
+              "y": 92
+            },
+            {
+              "x": 128,
+              "y": 102
+            },
+            {
+              "x": 127,
+              "y": 115
+            },
+            {
+              "x": 127,
+              "y": 122
+            },
+            {
+              "x": 127,
+              "y": 127
+            },
+            {
+              "x": 127,
+              "y": 132
+            },
+            {
+              "x": 127,
+              "y": 139
+            },
+            {
+              "x": 127,
+              "y": 146
+            },
+            {
+              "x": 127,
+              "y": 152
+            },
+            {
+              "x": 128,
+              "y": 155
+            },
+            {
+              "x": 132,
+              "y": 159
+            },
+            {
+              "x": 135,
+              "y": 162
+            },
+            {
+              "x": 139,
+              "y": 165
+            },
+            {
+              "x": 142,
+              "y": 165
+            },
+            {
+              "x": 143,
+              "y": 165
+            },
+            {
+              "x": 144,
+              "y": 165
+            },
+            {
+              "x": 144,
+              "y": 162
+            },
+            {
+              "x": 144,
+              "y": 153
+            },
+            {
+              "x": 144,
+              "y": 150
+            },
+            {
+              "x": 143,
+              "y": 148
+            },
+            {
+              "x": 142,
+              "y": 146
+            },
+            {
+              "x": 140,
+              "y": 146
+            },
+            {
+              "x": 140,
+              "y": 145
+            },
+            {
+              "x": 147,
+              "y": 149
+            },
+            {
+              "x": 169,
+              "y": 164
+            },
+            {
+              "x": 179,
+              "y": 167
+            },
+            {
+              "x": 180,
+              "y": 167
+            },
+            {
+              "x": 183,
+              "y": 166
+            },
+            {
+              "x": 184,
+              "y": 159
+            },
+            {
+              "x": 184,
+              "y": 151
+            },
+            {
+              "x": 183,
+              "y": 132
+            },
+            {
+              "x": 183,
+              "y": 131
+            },
+            {
+              "x": 183,
+              "y": 130
+            },
+            {
+              "x": 191,
+              "y": 132
+            },
+            {
+              "x": 224,
+              "y": 154
+            },
+            {
+              "x": 237,
+              "y": 161
+            },
+            {
+              "x": 240,
+              "y": 161
+            },
+            {
+              "x": 242,
+              "y": 161
+            },
+            {
+              "x": 242,
+              "y": 153
+            },
+            {
+              "x": 242,
+              "y": 149
+            },
+            {
+              "x": 244,
+              "y": 149
+            },
+            {
+              "x": 252,
+              "y": 158
+            },
+            {
+              "x": 254,
+              "y": 159
+            },
+            {
+              "x": 255,
+              "y": 159
+            },
+            {
+              "x": 256,
+              "y": 159
+            },
+            {
+              "x": 257,
+              "y": 156
+            },
+            {
+              "x": 257,
+              "y": 155
+            },
+            {
+              "x": 260,
+              "y": 154
+            },
+            {
+              "x": 264,
+              "y": 154
+            },
+            {
+              "x": 266,
+              "y": 155
+            },
+            {
+              "x": 269,
+              "y": 157
+            },
+            {
+              "x": 272,
+              "y": 157
+            },
+            {
+              "x": 273,
+              "y": 157
+            },
+            {
+              "x": 274,
+              "y": 157
+            },
+            {
+              "x": 279,
+              "y": 153
+            },
+            {
+              "x": 281,
+              "y": 149
+            },
+            {
+              "x": 283,
+              "y": 147
+            },
+            {
+              "x": 284,
+              "y": 145
+            },
+            {
+              "x": 285,
+              "y": 144
+            },
+            {
+              "x": 287,
+              "y": 143
+            },
+            {
+              "x": 295,
+              "y": 143
+            },
+            {
+              "x": 301,
+              "y": 143
+            },
+            {
+              "x": 305,
+              "y": 144
+            }
+          ],
+          "color": "#10b981",
+          "lineWidth": 4
+        }
+      ],
+      "updatedBy": "fc8314b4f5e50d13"
+    },
+    {
+      "_id": "81045b6eac9ef35c",
+      "createdAt": "2026-05-22T14:20:46.846Z",
+      "updatedAt": "2026-05-27T08:30:47.733Z",
+      "project": "9abca347f9f0966d",
+      "elements": [],
+      "updatedBy": "fc8314b4f5e50d13"
+    },
+    {
+      "_id": "70d8ee4157d60d37",
+      "createdAt": "2026-05-27T04:27:46.715Z",
+      "updatedAt": "2026-05-27T06:13:37.668Z",
+      "project": "5d0b67f138151a76",
+      "elements": [
+        {
+          "id": "zy6icts",
+          "type": "line-draw",
+          "points": [
+            {
+              "x": 468,
+              "y": 60
+            },
+            {
+              "x": 467,
+              "y": 60
+            },
+            {
+              "x": 463,
+              "y": 60
+            },
+            {
+              "x": 455,
+              "y": 61
+            },
+            {
+              "x": 442,
+              "y": 63
+            },
+            {
+              "x": 437,
+              "y": 64
+            },
+            {
+              "x": 431,
+              "y": 64
+            }
+          ],
+          "color": "#10b981",
+          "lineWidth": 4
+        }
+      ],
+      "updatedBy": "7498126800e79160"
+    }
+  ],
+  "notes": [
+    {
+      "_id": "dc7411ed00f6caa4",
+      "createdAt": "2026-05-22T12:53:57.296Z",
+      "updatedAt": "2026-05-22T12:53:57.296Z",
+      "title": "Project Kickoff Notes",
+      "content": "# CollabMind Launch Guidelines\n\nWelcome team! Here are our core milestones:\n1. **Real-time collaboration**: Canvas sketch maps & chat.\n2. **AI Assistance**: Generating subtasks on demand.\n3. **Financial integrity**: Real-time budget monitoring limits.\n\nKeep updates clean and test routes locally!",
+      "project": "149877fa76815446",
+      "versions": [
+        {
+          "content": "# Project Kickoff Notes\nInitial draft compiled for the launch.",
+          "updatedBy": "fc8314b4f5e50d13",
+          "createdAt": "2026-05-16T12:53:57.296Z"
+        },
+        {
+          "content": "# CollabMind Launch Guidelines\n\nWelcome team! Here are our core milestones:\n1. **Real-time collaboration**: Canvas sketch maps & chat.",
+          "updatedBy": "33ef8475b772b2e2",
+          "createdAt": "2026-05-20T12:53:57.296Z"
+        }
+      ]
+    },
+    {
+      "_id": "69b87b57a116a641",
+      "createdAt": "2026-05-23T04:02:51.168Z",
+      "updatedAt": "2026-05-23T05:53:41.932Z",
+      "title": "Untitled Note",
+      "content": "",
+      "project": "9abca347f9f0966d",
+      "versions": [
+        {
+          "content": "",
+          "updatedBy": "fc8314b4f5e50d13",
+          "createdAt": "2026-05-23T04:02:51.168Z"
+        },
+        {
+          "content": "",
+          "updatedBy": "fc8314b4f5e50d13",
+          "createdAt": "2026-05-23T05:53:38.981Z"
+        },
+        {
+          "content": "#",
+          "updatedBy": "fc8314b4f5e50d13",
+          "createdAt": "2026-05-23T05:53:41.931Z"
+        }
+      ]
+    }
+  ],
+  "chats": [
+    {
+      "_id": "d514c21353d5ab0c",
+      "createdAt": "2026-05-22T12:53:57.297Z",
+      "updatedAt": "2026-05-22T12:53:57.297Z",
+      "project": "149877fa76815446",
+      "sender": "fc8314b4f5e50d13",
+      "message": "Hey team! Welcome to the CollabMind collaborative project workspace. Let's make this launch legendary!",
+      "readBy": [
+        "fc8314b4f5e50d13",
+        "33ef8475b772b2e2",
+        "a8829e584114d8bd"
+      ]
+    },
+    {
+      "_id": "55fa3ba624f46645",
+      "createdAt": "2026-05-22T12:53:57.297Z",
+      "updatedAt": "2026-05-22T12:53:57.297Z",
+      "project": "149877fa76815446",
+      "sender": "33ef8475b772b2e2",
+      "message": "Thanks Sarah! The socket integrations look solid. I am finishing up the live drawing sync on the whiteboard now.",
+      "readBy": [
+        "fc8314b4f5e50d13",
+        "33ef8475b772b2e2",
+        "a8829e584114d8bd"
+      ]
+    },
+    {
+      "_id": "0a58d6f672fd82b8",
+      "createdAt": "2026-05-22T12:53:57.298Z",
+      "updatedAt": "2026-05-22T12:53:57.298Z",
+      "project": "149877fa76815446",
+      "sender": "a8829e584114d8bd",
+      "message": "Impressive progress. I really like the clean layout. Can we confirm the budget tracker charts match our spreadsheets?",
+      "readBy": [
+        "fc8314b4f5e50d13",
+        "33ef8475b772b2e2",
+        "a8829e584114d8bd"
+      ]
+    },
+    {
+      "_id": "2a3d08c3e831f2f2",
+      "createdAt": "2026-05-23T02:22:55.337Z",
+      "updatedAt": "2026-05-23T02:22:55.337Z",
+      "project": "9abca347f9f0966d",
+      "sender": "fc8314b4f5e50d13",
+      "message": "hi",
+      "readBy": [
+        "fc8314b4f5e50d13"
+      ]
+    },
+    {
+      "_id": "e741fcb57f3d9417",
+      "createdAt": "2026-05-23T05:54:54.556Z",
+      "updatedAt": "2026-05-23T05:54:54.556Z",
+      "project": "9abca347f9f0966d",
+      "sender": "fc8314b4f5e50d13",
+      "message": "hi ]",
+      "readBy": [
+        "fc8314b4f5e50d13"
+      ]
+    },
+    {
+      "_id": "8772a07a8d6a11d3",
+      "createdAt": "2026-05-27T06:13:56.290Z",
+      "updatedAt": "2026-05-27T06:13:56.290Z",
+      "project": "5d0b67f138151a76",
+      "sender": "7498126800e79160",
+      "message": "hi sid",
+      "readBy": [
+        "7498126800e79160"
+      ]
+    },
+    {
+      "_id": "d90543a661c8846b",
+      "createdAt": "2026-05-27T06:14:04.271Z",
+      "updatedAt": "2026-05-27T06:14:04.271Z",
+      "project": "5d0b67f138151a76",
+      "sender": "7498126800e79160",
+      "message": "h",
+      "readBy": [
+        "7498126800e79160"
+      ]
+    },
+    {
+      "_id": "bc4a64b8124d764a",
+      "createdAt": "2026-05-27T08:31:32.238Z",
+      "updatedAt": "2026-05-27T08:31:32.238Z",
+      "project": "9abca347f9f0966d",
+      "sender": "fc8314b4f5e50d13",
+      "message": "hi",
+      "readBy": [
+        "fc8314b4f5e50d13"
+      ]
+    }
+  ],
+  "activities": [
+    {
+      "_id": "5caa6ab6844061dd",
+      "createdAt": "2026-05-22T12:53:57.302Z",
+      "updatedAt": "2026-05-22T12:53:57.302Z",
+      "project": "149877fa76815446",
+      "user": "fc8314b4f5e50d13",
+      "action": "Project Created",
+      "details": "Created project \"CollabMind Platform Launch\" with total budget allocation $25,000."
+    },
+    {
+      "_id": "4edcfd2c2844ddc5",
+      "createdAt": "2026-05-22T12:53:57.303Z",
+      "updatedAt": "2026-05-22T12:53:57.303Z",
+      "project": "149877fa76815446",
+      "user": "fc8314b4f5e50d13",
+      "action": "Member Added",
+      "details": "Added Alex Rivera (Developer) to the workspace with role: Member."
+    },
+    {
+      "_id": "a8ed9d9c9bb7d036",
+      "createdAt": "2026-05-22T12:53:57.303Z",
+      "updatedAt": "2026-05-22T12:53:57.303Z",
+      "project": "149877fa76815446",
+      "user": "fc8314b4f5e50d13",
+      "action": "Member Added",
+      "details": "Added David Miller (Stakeholder) to the workspace with role: Viewer."
+    },
+    {
+      "_id": "13e3b8412c5bb148",
+      "createdAt": "2026-05-22T12:53:57.304Z",
+      "updatedAt": "2026-05-22T12:53:57.304Z",
+      "project": "149877fa76815446",
+      "user": "33ef8475b772b2e2",
+      "action": "Expense Logged",
+      "details": "Logged expense \"Gemini Generative API Tokens\" of $600 under category \"AI Credits\"."
+    },
+    {
+      "_id": "32c3e61ad214cd99",
+      "createdAt": "2026-05-22T12:53:57.305Z",
+      "updatedAt": "2026-05-22T12:53:57.305Z",
+      "project": "149877fa76815446",
+      "user": "33ef8475b772b2e2",
+      "action": "Task Moved",
+      "details": "Moved task \"Connect Gemini Brainstorming API\" from \"InProgress\" to \"Review\"."
+    },
+    {
+      "_id": "e56132caa9b5dcda",
+      "createdAt": "2026-05-22T12:54:58.978Z",
+      "updatedAt": "2026-05-22T12:54:58.978Z",
+      "project": "149877fa76815446",
+      "user": "fc8314b4f5e50d13",
+      "action": "Task Updated",
+      "details": "Updated details for task \"Design System Architecture\"."
+    },
+    {
+      "_id": "d0ebed38de971b4f",
+      "createdAt": "2026-05-22T12:55:00.343Z",
+      "updatedAt": "2026-05-22T12:55:00.343Z",
+      "project": "149877fa76815446",
+      "user": "fc8314b4f5e50d13",
+      "action": "Task Updated",
+      "details": "Updated details for task \"Design System Architecture\"."
+    },
+    {
+      "_id": "cdcb695db5310702",
+      "createdAt": "2026-05-22T12:56:26.767Z",
+      "updatedAt": "2026-05-22T12:56:26.767Z",
+      "project": "9abca347f9f0966d",
+      "user": "fc8314b4f5e50d13",
+      "action": "Project Created",
+      "details": "Project \"impact training \" was created."
+    },
+    {
+      "_id": "54963295111d9908",
+      "createdAt": "2026-05-22T14:19:35.574Z",
+      "updatedAt": "2026-05-22T14:19:35.574Z",
+      "project": "9abca347f9f0966d",
+      "user": "fc8314b4f5e50d13",
+      "action": "Task Created",
+      "details": "Created task \"Launch Social Media Campaign\" in column \"Todo\"."
+    },
+    {
+      "_id": "21f28af434ac64c7",
+      "createdAt": "2026-05-22T14:19:41.199Z",
+      "updatedAt": "2026-05-22T14:19:41.199Z",
+      "project": "9abca347f9f0966d",
+      "user": "fc8314b4f5e50d13",
+      "action": "Task Created",
+      "details": "Created task \"Collect Beta User Feedback\" in column \"Todo\"."
+    },
+    {
+      "_id": "30755ee503dfdafb",
+      "createdAt": "2026-05-22T14:19:43.423Z",
+      "updatedAt": "2026-05-22T14:19:43.423Z",
+      "project": "9abca347f9f0966d",
+      "user": "fc8314b4f5e50d13",
+      "action": "Task Created",
+      "details": "Created task \"Setup Product Landing Page\" in column \"Todo\"."
+    },
+    {
+      "_id": "2b46e11cb5f0a2e8",
+      "createdAt": "2026-05-22T14:19:44.519Z",
+      "updatedAt": "2026-05-22T14:19:44.519Z",
+      "project": "9abca347f9f0966d",
+      "user": "fc8314b4f5e50d13",
+      "action": "Task Created",
+      "details": "Created task \"Define Target Customer Profile\" in column \"Todo\"."
+    },
+    {
+      "_id": "27c029153d328236",
+      "createdAt": "2026-05-22T14:21:16.721Z",
+      "updatedAt": "2026-05-22T14:21:16.721Z",
+      "project": "9abca347f9f0966d",
+      "user": "fc8314b4f5e50d13",
+      "action": "Expense Logged",
+      "details": "Logged expense: \"to collect the data from beta\" of $2. "
+    },
+    {
+      "_id": "c70de9443d9f6985",
+      "createdAt": "2026-05-23T02:17:53.998Z",
+      "updatedAt": "2026-05-23T02:17:53.998Z",
+      "project": "5d0b67f138151a76",
+      "user": "fc8314b4f5e50d13",
+      "action": "Project Created",
+      "details": "Project \"training \" was created."
+    },
+    {
+      "_id": "1730d3fce9acf1e9",
+      "createdAt": "2026-05-23T02:18:51.682Z",
+      "updatedAt": "2026-05-23T02:18:51.682Z",
+      "project": "9abca347f9f0966d",
+      "user": "fc8314b4f5e50d13",
+      "action": "Note Created",
+      "details": "Created note \"Untitled Note\"."
+    },
+    {
+      "_id": "91f722de49537e62",
+      "createdAt": "2026-05-23T02:19:10.364Z",
+      "updatedAt": "2026-05-23T02:19:10.364Z",
+      "project": "9abca347f9f0966d",
+      "user": "fc8314b4f5e50d13",
+      "action": "Note Edited",
+      "details": "Edited note \"Untitled Note\"."
+    },
+    {
+      "_id": "a059cef162699d16",
+      "createdAt": "2026-05-23T02:19:12.297Z",
+      "updatedAt": "2026-05-23T02:19:12.297Z",
+      "project": "9abca347f9f0966d",
+      "user": "fc8314b4f5e50d13",
+      "action": "Note Edited",
+      "details": "Edited note \"Untitled Note\"."
+    },
+    {
+      "_id": "05dc5f8f4c241e57",
+      "createdAt": "2026-05-23T02:19:17.411Z",
+      "updatedAt": "2026-05-23T02:19:17.411Z",
+      "project": "9abca347f9f0966d",
+      "user": "fc8314b4f5e50d13",
+      "action": "Note Edited",
+      "details": "Edited note \"Untitled Note\"."
+    },
+    {
+      "_id": "f1936970635557bd",
+      "createdAt": "2026-05-23T02:19:21.641Z",
+      "updatedAt": "2026-05-23T02:19:21.641Z",
+      "project": "9abca347f9f0966d",
+      "user": "fc8314b4f5e50d13",
+      "action": "Note Edited",
+      "details": "Edited note \"Untitled Note\"."
+    },
+    {
+      "_id": "f08282c4bb68ac51",
+      "createdAt": "2026-05-23T02:19:25.446Z",
+      "updatedAt": "2026-05-23T02:19:25.446Z",
+      "project": "9abca347f9f0966d",
+      "user": "fc8314b4f5e50d13",
+      "action": "Note Edited",
+      "details": "Edited note \"Untitled Note\"."
+    },
+    {
+      "_id": "81f7f892e249ff85",
+      "createdAt": "2026-05-23T04:02:51.170Z",
+      "updatedAt": "2026-05-23T04:02:51.170Z",
+      "project": "9abca347f9f0966d",
+      "user": "fc8314b4f5e50d13",
+      "action": "Note Created",
+      "details": "Created note \"Untitled Note\"."
+    },
+    {
+      "_id": "907f05e73fc2b69b",
+      "createdAt": "2026-05-23T04:02:56.898Z",
+      "updatedAt": "2026-05-23T04:02:56.898Z",
+      "project": "9abca347f9f0966d",
+      "user": "fc8314b4f5e50d13",
+      "action": "Note Deleted",
+      "details": "Deleted note \"Untitled Note\"."
+    },
+    {
+      "_id": "77463a3ba2431f00",
+      "createdAt": "2026-05-23T04:03:30.928Z",
+      "updatedAt": "2026-05-23T04:03:30.928Z",
+      "project": "9abca347f9f0966d",
+      "user": "fc8314b4f5e50d13",
+      "action": "Expense Logged",
+      "details": "Logged expense: \"salary\" of $10. "
+    },
+    {
+      "_id": "23e1c5ed8da70e18",
+      "createdAt": "2026-05-23T04:03:44.383Z",
+      "updatedAt": "2026-05-23T04:03:44.383Z",
+      "project": "9abca347f9f0966d",
+      "user": "fc8314b4f5e50d13",
+      "action": "Budget Configured",
+      "details": "Project total budget limit set to $100."
+    },
+    {
+      "_id": "520030b6f4f98833",
+      "createdAt": "2026-05-23T05:53:38.990Z",
+      "updatedAt": "2026-05-23T05:53:38.990Z",
+      "project": "9abca347f9f0966d",
+      "user": "fc8314b4f5e50d13",
+      "action": "Note Edited",
+      "details": "Edited note \"Untitled Note\"."
+    },
+    {
+      "_id": "604f198dfa0ab6dd",
+      "createdAt": "2026-05-23T05:53:41.941Z",
+      "updatedAt": "2026-05-23T05:53:41.940Z",
+      "project": "9abca347f9f0966d",
+      "user": "fc8314b4f5e50d13",
+      "action": "Note Edited",
+      "details": "Edited note \"Untitled Note\"."
+    },
+    {
+      "_id": "e9eab8e7ab9e5b70",
+      "createdAt": "2026-05-23T05:54:29.358Z",
+      "updatedAt": "2026-05-23T05:54:29.358Z",
+      "project": "9abca347f9f0966d",
+      "user": "fc8314b4f5e50d13",
+      "action": "Task Moved",
+      "details": "Moved task \"Launch Social Media Campaign\" from \"Todo\" to \"InProgress\"."
+    },
+    {
+      "_id": "47bfae0bff34d826",
+      "createdAt": "2026-05-23T05:54:32.500Z",
+      "updatedAt": "2026-05-23T05:54:32.500Z",
+      "project": "9abca347f9f0966d",
+      "user": "fc8314b4f5e50d13",
+      "action": "Task Moved",
+      "details": "Moved task \"Collect Beta User Feedback\" from \"Todo\" to \"Review\"."
+    },
+    {
+      "_id": "05fb937aad0468af",
+      "createdAt": "2026-05-23T05:54:36.356Z",
+      "updatedAt": "2026-05-23T05:54:36.356Z",
+      "project": "9abca347f9f0966d",
+      "user": "fc8314b4f5e50d13",
+      "action": "Task Moved",
+      "details": "Moved task \"Collect Beta User Feedback\" from \"Review\" to \"InProgress\"."
+    },
+    {
+      "_id": "028a25545eb705e2",
+      "createdAt": "2026-05-23T05:54:38.776Z",
+      "updatedAt": "2026-05-23T05:54:38.776Z",
+      "project": "9abca347f9f0966d",
+      "user": "fc8314b4f5e50d13",
+      "action": "Task Moved",
+      "details": "Moved task \"Collect Beta User Feedback\" from \"InProgress\" to \"Todo\"."
+    },
+    {
+      "_id": "2e6054e493bfffc6",
+      "createdAt": "2026-05-23T05:54:40.211Z",
+      "updatedAt": "2026-05-23T05:54:40.211Z",
+      "project": "9abca347f9f0966d",
+      "user": "fc8314b4f5e50d13",
+      "action": "Task Moved",
+      "details": "Moved task \"Launch Social Media Campaign\" from \"InProgress\" to \"Todo\"."
+    },
+    {
+      "_id": "7507bb824cac1fe5",
+      "createdAt": "2026-05-23T05:55:15.476Z",
+      "updatedAt": "2026-05-23T05:55:15.476Z",
+      "project": "9abca347f9f0966d",
+      "user": "fc8314b4f5e50d13",
+      "action": "Expense Logged",
+      "details": "Logged expense: \"salary\" of $10. "
+    },
+    {
+      "_id": "23fa516b0bcc9cbf",
+      "createdAt": "2026-05-25T02:06:20.223Z",
+      "updatedAt": "2026-05-25T02:06:20.223Z",
+      "project": "9abca347f9f0966d",
+      "user": "fc8314b4f5e50d13",
+      "action": "Task Moved",
+      "details": "Moved task \"Launch Social Media Campaign\" from \"Todo\" to \"InProgress\"."
+    },
+    {
+      "_id": "5bb0246e37273217",
+      "createdAt": "2026-05-25T02:06:37.045Z",
+      "updatedAt": "2026-05-25T02:06:37.045Z",
+      "project": "9abca347f9f0966d",
+      "user": "fc8314b4f5e50d13",
+      "action": "Expense Logged",
+      "details": "Logged expense: \"demo\" of $20. "
+    },
+    {
+      "_id": "fe4b0f278d158e6e",
+      "createdAt": "2026-05-27T02:23:07.871Z",
+      "updatedAt": "2026-05-27T02:23:07.871Z",
+      "project": "149877fa76815446",
+      "user": "fc8314b4f5e50d13",
+      "action": "File Created",
+      "details": "Created new file \"app.c\" in code workspace."
+    },
+    {
+      "_id": "fc7d791e76aaf60f",
+      "createdAt": "2026-05-27T02:24:28.200Z",
+      "updatedAt": "2026-05-27T02:24:28.200Z",
+      "project": "149877fa76815446",
+      "user": "fc8314b4f5e50d13",
+      "action": "File Deleted",
+      "details": "Deleted file \"app.c\" from code workspace."
+    },
+    {
+      "_id": "9be454f2c9ee0be5",
+      "createdAt": "2026-05-27T02:26:25.211Z",
+      "updatedAt": "2026-05-27T02:26:25.211Z",
+      "project": "9abca347f9f0966d",
+      "user": "fc8314b4f5e50d13",
+      "action": "File Deleted",
+      "details": "Deleted file \"index.html\" from code workspace."
+    },
+    {
+      "_id": "81470da618f2f8a0",
+      "createdAt": "2026-05-27T02:26:28.007Z",
+      "updatedAt": "2026-05-27T02:26:28.007Z",
+      "project": "9abca347f9f0966d",
+      "user": "fc8314b4f5e50d13",
+      "action": "File Deleted",
+      "details": "Deleted file \"style.css\" from code workspace."
+    },
+    {
+      "_id": "2fc5f16c9aa2a95b",
+      "createdAt": "2026-05-27T02:26:30.969Z",
+      "updatedAt": "2026-05-27T02:26:30.969Z",
+      "project": "9abca347f9f0966d",
+      "user": "fc8314b4f5e50d13",
+      "action": "File Deleted",
+      "details": "Deleted file \"script.js\" from code workspace."
+    },
+    {
+      "_id": "b30fc355f224335b",
+      "createdAt": "2026-05-27T02:26:43.758Z",
+      "updatedAt": "2026-05-27T02:26:43.758Z",
+      "project": "9abca347f9f0966d",
+      "user": "fc8314b4f5e50d13",
+      "action": "File Created",
+      "details": "Created new file \"app.c\" in code workspace."
+    },
+    {
+      "_id": "a7cca3cdeed90d76",
+      "createdAt": "2026-05-27T02:26:47.872Z",
+      "updatedAt": "2026-05-27T02:26:47.872Z",
+      "project": "9abca347f9f0966d",
+      "user": "fc8314b4f5e50d13",
+      "action": "File Deleted",
+      "details": "Deleted file \"main.py\" from code workspace."
+    },
+    {
+      "_id": "963dfaa45deaf1c9",
+      "createdAt": "2026-05-27T02:27:02.944Z",
+      "updatedAt": "2026-05-27T02:27:02.944Z",
+      "project": "9abca347f9f0966d",
+      "user": "fc8314b4f5e50d13",
+      "action": "File Created",
+      "details": "Created new file \"app.py\" in code workspace."
+    },
+    {
+      "_id": "a24376d3dc6ece47",
+      "createdAt": "2026-05-27T02:27:07.404Z",
+      "updatedAt": "2026-05-27T02:27:07.404Z",
+      "project": "9abca347f9f0966d",
+      "user": "fc8314b4f5e50d13",
+      "action": "File Deleted",
+      "details": "Deleted file \"app.c\" from code workspace."
+    },
+    {
+      "_id": "b66eaee7d1b9eb1b",
+      "createdAt": "2026-05-27T02:40:29.224Z",
+      "updatedAt": "2026-05-27T02:40:29.224Z",
+      "project": "9abca347f9f0966d",
+      "user": "fc8314b4f5e50d13",
+      "action": "File Created",
+      "details": "Created new file \"app.c\" in code workspace."
+    },
+    {
+      "_id": "51d52812c776fa52",
+      "createdAt": "2026-05-27T02:55:05.073Z",
+      "updatedAt": "2026-05-27T02:55:05.073Z",
+      "project": "9abca347f9f0966d",
+      "user": "fc8314b4f5e50d13",
+      "action": "File Created",
+      "details": "Created new file \"app.java\" in code workspace."
+    },
+    {
+      "_id": "fb68673fe396cd81",
+      "createdAt": "2026-05-27T03:01:19.234Z",
+      "updatedAt": "2026-05-27T03:01:19.234Z",
+      "project": "9abca347f9f0966d",
+      "user": "fc8314b4f5e50d13",
+      "action": "File Created",
+      "details": "Created new file \"index.html\" in code workspace."
+    },
+    {
+      "_id": "ef124d5f51a5f347",
+      "createdAt": "2026-05-27T03:01:55.557Z",
+      "updatedAt": "2026-05-27T03:01:55.557Z",
+      "project": "9abca347f9f0966d",
+      "user": "fc8314b4f5e50d13",
+      "action": "File Created",
+      "details": "Created new file \"basic.css\" in code workspace."
+    },
+    {
+      "_id": "8773ae736e816f70",
+      "createdAt": "2026-05-27T03:02:19.960Z",
+      "updatedAt": "2026-05-27T03:02:19.960Z",
+      "project": "9abca347f9f0966d",
+      "user": "fc8314b4f5e50d13",
+      "action": "File Deleted",
+      "details": "Deleted file \"app.py\" from code workspace."
+    },
+    {
+      "_id": "c0ff36523295b939",
+      "createdAt": "2026-05-27T03:02:23.134Z",
+      "updatedAt": "2026-05-27T03:02:23.134Z",
+      "project": "9abca347f9f0966d",
+      "user": "fc8314b4f5e50d13",
+      "action": "File Deleted",
+      "details": "Deleted file \"index.html\" from code workspace."
+    },
+    {
+      "_id": "5975a15686241bdb",
+      "createdAt": "2026-05-27T03:02:26.419Z",
+      "updatedAt": "2026-05-27T03:02:26.419Z",
+      "project": "9abca347f9f0966d",
+      "user": "fc8314b4f5e50d13",
+      "action": "File Deleted",
+      "details": "Deleted file \"basic.css\" from code workspace."
+    },
+    {
+      "_id": "d128761c0b0dc0b8",
+      "createdAt": "2026-05-27T03:02:31.220Z",
+      "updatedAt": "2026-05-27T03:02:31.220Z",
+      "project": "9abca347f9f0966d",
+      "user": "fc8314b4f5e50d13",
+      "action": "File Deleted",
+      "details": "Deleted file \"app.java\" from code workspace."
+    },
+    {
+      "_id": "09aba2d6268dd8b5",
+      "createdAt": "2026-05-27T04:05:09.521Z",
+      "updatedAt": "2026-05-27T04:05:09.521Z",
+      "project": "149877fa76815446",
+      "user": "fc8314b4f5e50d13",
+      "action": "File Created",
+      "details": "Created new file \"app.java\" in code workspace."
+    },
+    {
+      "_id": "0bbe34f1d4e4be4e",
+      "createdAt": "2026-05-27T04:05:41.000Z",
+      "updatedAt": "2026-05-27T04:05:41.000Z",
+      "project": "149877fa76815446",
+      "user": "fc8314b4f5e50d13",
+      "action": "File Created",
+      "details": "Created new file \"demo.c\" in code workspace."
+    },
+    {
+      "_id": "00ac2209b8caeead",
+      "createdAt": "2026-05-27T04:06:29.434Z",
+      "updatedAt": "2026-05-27T04:06:29.434Z",
+      "project": "149877fa76815446",
+      "user": "fc8314b4f5e50d13",
+      "action": "File Created",
+      "details": "Created new file \"demo1.cpp\" in code workspace."
+    },
+    {
+      "_id": "c67fa0fc9c65d5c5",
+      "createdAt": "2026-05-27T04:07:40.088Z",
+      "updatedAt": "2026-05-27T04:07:40.088Z",
+      "project": "149877fa76815446",
+      "user": "fc8314b4f5e50d13",
+      "action": "File Deleted",
+      "details": "Deleted file \"app.java\" from code workspace."
+    },
+    {
+      "_id": "261c72f8813fb876",
+      "createdAt": "2026-05-27T04:07:43.120Z",
+      "updatedAt": "2026-05-27T04:07:43.120Z",
+      "project": "149877fa76815446",
+      "user": "fc8314b4f5e50d13",
+      "action": "File Deleted",
+      "details": "Deleted file \"demo.c\" from code workspace."
+    },
+    {
+      "_id": "15464964fc7d2ad0",
+      "createdAt": "2026-05-27T04:07:46.118Z",
+      "updatedAt": "2026-05-27T04:07:46.118Z",
+      "project": "149877fa76815446",
+      "user": "fc8314b4f5e50d13",
+      "action": "File Deleted",
+      "details": "Deleted file \"demo1.cpp\" from code workspace."
+    },
+    {
+      "_id": "7ee054274e7cff10",
+      "createdAt": "2026-05-27T04:09:19.027Z",
+      "updatedAt": "2026-05-27T04:09:19.027Z",
+      "project": "5d0b67f138151a76",
+      "user": "fc8314b4f5e50d13",
+      "action": "File Created",
+      "details": "Created new file \"demo.java\" in code workspace."
+    },
+    {
+      "_id": "eb251d3e5afa7162",
+      "createdAt": "2026-05-27T06:09:09.563Z",
+      "updatedAt": "2026-05-27T06:09:09.563Z",
+      "project": "5d0b67f138151a76",
+      "user": "fc8314b4f5e50d13",
+      "action": "Member Added",
+      "details": "Added \"Siddharth\" to the project as \"Member\"."
+    },
+    {
+      "_id": "c1635b09ad32aa2f",
+      "createdAt": "2026-05-27T06:10:19.698Z",
+      "updatedAt": "2026-05-27T06:10:19.698Z",
+      "project": "5d0b67f138151a76",
+      "user": "7498126800e79160",
+      "action": "File Created",
+      "details": "Created new file \"demo1.c\" in code workspace."
+    },
+    {
+      "_id": "6c2425a4ad5dcaad",
+      "createdAt": "2026-05-27T08:30:28.494Z",
+      "updatedAt": "2026-05-27T08:30:28.494Z",
+      "project": "9abca347f9f0966d",
+      "user": "fc8314b4f5e50d13",
+      "action": "Task Moved",
+      "details": "Moved task \"Launch Social Media Campaign\" from \"InProgress\" to \"Done\"."
+    },
+    {
+      "_id": "946bc0aabd0df908",
+      "createdAt": "2026-05-27T08:30:33.663Z",
+      "updatedAt": "2026-05-27T08:30:33.663Z",
+      "project": "9abca347f9f0966d",
+      "user": "fc8314b4f5e50d13",
+      "action": "Task Moved",
+      "details": "Moved task \"Collect Beta User Feedback\" from \"Todo\" to \"InProgress\"."
+    },
+    {
+      "_id": "a4a1fd1beecdf3ee",
+      "createdAt": "2026-05-27T08:30:35.089Z",
+      "updatedAt": "2026-05-27T08:30:35.089Z",
+      "project": "9abca347f9f0966d",
+      "user": "fc8314b4f5e50d13",
+      "action": "Task Moved",
+      "details": "Moved task \"Setup Product Landing Page\" from \"Todo\" to \"Review\"."
+    },
+    {
+      "_id": "0660c0987c9e4728",
+      "createdAt": "2026-05-27T08:30:36.566Z",
+      "updatedAt": "2026-05-27T08:30:36.566Z",
+      "project": "9abca347f9f0966d",
+      "user": "fc8314b4f5e50d13",
+      "action": "Task Moved",
+      "details": "Moved task \"Define Target Customer Profile\" from \"Todo\" to \"InProgress\"."
+    },
+    {
+      "_id": "6b64dd508b0683ee",
+      "createdAt": "2026-05-27T08:31:15.747Z",
+      "updatedAt": "2026-05-27T08:31:15.747Z",
+      "project": "9abca347f9f0966d",
+      "user": "fc8314b4f5e50d13",
+      "action": "File Created",
+      "details": "Created new file \"demo.java\" in code workspace."
+    },
+    {
+      "_id": "b3bec4fb8e3719c3",
+      "createdAt": "2026-05-27T08:31:49.769Z",
+      "updatedAt": "2026-05-27T08:31:49.769Z",
+      "project": "9abca347f9f0966d",
+      "user": "fc8314b4f5e50d13",
+      "action": "Expense Logged",
+      "details": "Logged expense: \"marketing\" of $4. "
+    },
+    {
+      "_id": "0886e86aca378499",
+      "createdAt": "2026-05-27T08:31:59.552Z",
+      "updatedAt": "2026-05-27T08:31:59.552Z",
+      "project": "9abca347f9f0966d",
+      "user": "fc8314b4f5e50d13",
+      "action": "Budget Configured",
+      "details": "Project total budget limit set to $100."
+    },
+    {
+      "_id": "a2484b191287a8b2",
+      "createdAt": "2026-05-28T02:27:49.948Z",
+      "updatedAt": "2026-05-28T02:27:49.948Z",
+      "project": "149877fa76815446",
+      "user": "fc8314b4f5e50d13",
+      "action": "Expense Logged",
+      "details": "Logged expense: \"website\" of $150. "
+    },
+    {
+      "_id": "f808bdfad6badc9b",
+      "createdAt": "2026-05-28T02:30:58.099Z",
+      "updatedAt": "2026-05-28T02:30:58.099Z",
+      "project": "149877fa76815446",
+      "user": "fc8314b4f5e50d13",
+      "action": "File Created",
+      "details": "Created new file \"demo3.rb\" in code workspace."
+    }
+  ],
+  "codefiles": [
+    {
+      "_id": "20dfefe5713a0121",
+      "createdAt": "2026-05-27T02:22:43.655Z",
+      "updatedAt": "2026-05-27T04:07:47.912Z",
+      "project": "149877fa76815446",
+      "filename": "index.html",
+      "language": "html",
+      "content": "<!-- CollabMind Collaborative Workspace -->\n<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <title>Live Preview Playground</title>\n    <link rel=\"stylesheet\" href=\"style.css\">\n</head>\n<body>\n    <div class=\"card\">\n        <h1>Welcome to CollabMind Live HTML!</h1>\n        <p>This is a real-time collaborative code workspace. Edit the code and watch the rendering update dynamically.</p>\n        <button id=\"action-btn\">Click Me!</button>\n        <div id=\"output\" class=\"hidden\"></div>\n    </div>\n    \n    <script src=\"script.js\"></script>\n</body>\n</html>",
+      "updatedBy": "fc8314b4f5e50d13"
+    },
+    {
+      "_id": "e5852968fc11fed1",
+      "createdAt": "2026-05-27T02:22:43.658Z",
+      "updatedAt": "2026-05-27T02:22:43.658Z",
+      "project": "149877fa76815446",
+      "filename": "style.css",
+      "language": "css",
+      "content": "/* Global Playground Styles */\nbody {\n    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);\n    color: #f8fafc;\n    font-family: system-ui, -apple-system, sans-serif;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    height: 100vh;\n    margin: 0;\n}\n\n.card {\n    background: rgba(30, 41, 59, 0.7);\n    backdrop-filter: blur(12px);\n    border: 1px solid rgba(255, 255, 255, 0.1);\n    padding: 2.5rem;\n    border-radius: 20px;\n    box-shadow: 0 10px 30px rgba(0,0,0,0.5);\n    text-align: center;\n    max-width: 450px;\n}\n\nh1 {\n    color: #10b981;\n    margin-top: 0;\n    font-size: 1.8rem;\n}\n\nbutton {\n    background: #10b981;\n    color: #fff;\n    border: none;\n    padding: 0.75rem 1.5rem;\n    font-size: 1rem;\n    font-weight: 600;\n    border-radius: 8px;\n    cursor: pointer;\n    transition: all 0.2s;\n    margin-top: 1rem;\n}\n\nbutton:hover {\n    background: #059669;\n    box-shadow: 0 0 15px rgba(16,185,129,0.4);\n}\n\n.hidden {\n    display: none;\n}\n\n#output {\n    margin-top: 1.5rem;\n    padding: 1rem;\n    background: rgba(0,0,0,0.3);\n    border-radius: 8px;\n    border: 1px dashed #10b981;\n    font-family: monospace;\n    color: #10b981;\n}",
+      "updatedBy": "fc8314b4f5e50d13"
+    },
+    {
+      "_id": "120f44172af81589",
+      "createdAt": "2026-05-27T02:22:43.660Z",
+      "updatedAt": "2026-05-27T02:22:43.660Z",
+      "project": "149877fa76815446",
+      "filename": "script.js",
+      "language": "javascript",
+      "content": "// Dynamic Playground Logic\nconst button = document.getElementById('action-btn');\nconst output = document.getElementById('output');\n\nbutton.addEventListener('click', () => {\n    output.classList.remove('hidden');\n    output.innerText = 'Button clicked at: ' + new Date().toLocaleTimeString();\n    \n    // Trigger tiny console alert\n    console.log('Action button executed successfully!');\n});",
+      "updatedBy": "fc8314b4f5e50d13"
+    },
+    {
+      "_id": "e41573b9b200d6f9",
+      "createdAt": "2026-05-27T02:22:43.662Z",
+      "updatedAt": "2026-05-27T02:22:43.662Z",
+      "project": "149877fa76815446",
+      "filename": "main.py",
+      "language": "python",
+      "content": "# Python Sandbox Playground\nprint(\"Welcome to the CollabMind Python Sandbox!\")\n\nx = 15\ny = 25\ntotal = x + y\n\nprint(\"Calculating standard sums...\")\nprint(\"Total of X and Y is:\")\nprint(total)\n",
+      "updatedBy": "fc8314b4f5e50d13"
+    },
+    {
+      "_id": "d398d6cc0fede366",
+      "createdAt": "2026-05-27T02:24:35.260Z",
+      "updatedAt": "2026-05-27T02:24:35.260Z",
+      "project": "5d0b67f138151a76",
+      "filename": "index.html",
+      "language": "html",
+      "content": "<!-- CollabMind Collaborative Workspace -->\n<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <title>Live Preview Playground</title>\n    <link rel=\"stylesheet\" href=\"style.css\">\n</head>\n<body>\n    <div class=\"card\">\n        <h1>Welcome to CollabMind Live HTML!</h1>\n        <p>This is a real-time collaborative code workspace. Edit the code and watch the rendering update dynamically.</p>\n        <button id=\"action-btn\">Click Me!</button>\n        <div id=\"output\" class=\"hidden\"></div>\n    </div>\n    \n    <script src=\"script.js\"></script>\n</body>\n</html>",
+      "updatedBy": "fc8314b4f5e50d13"
+    },
+    {
+      "_id": "3cf6b5c1fb7efb90",
+      "createdAt": "2026-05-27T02:24:35.262Z",
+      "updatedAt": "2026-05-27T02:24:35.262Z",
+      "project": "5d0b67f138151a76",
+      "filename": "style.css",
+      "language": "css",
+      "content": "/* Global Playground Styles */\nbody {\n    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);\n    color: #f8fafc;\n    font-family: system-ui, -apple-system, sans-serif;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    height: 100vh;\n    margin: 0;\n}\n\n.card {\n    background: rgba(30, 41, 59, 0.7);\n    backdrop-filter: blur(12px);\n    border: 1px solid rgba(255, 255, 255, 0.1);\n    padding: 2.5rem;\n    border-radius: 20px;\n    box-shadow: 0 10px 30px rgba(0,0,0,0.5);\n    text-align: center;\n    max-width: 450px;\n}\n\nh1 {\n    color: #10b981;\n    margin-top: 0;\n    font-size: 1.8rem;\n}\n\nbutton {\n    background: #10b981;\n    color: #fff;\n    border: none;\n    padding: 0.75rem 1.5rem;\n    font-size: 1rem;\n    font-weight: 600;\n    border-radius: 8px;\n    cursor: pointer;\n    transition: all 0.2s;\n    margin-top: 1rem;\n}\n\nbutton:hover {\n    background: #059669;\n    box-shadow: 0 0 15px rgba(16,185,129,0.4);\n}\n\n.hidden {\n    display: none;\n}\n\n#output {\n    margin-top: 1.5rem;\n    padding: 1rem;\n    background: rgba(0,0,0,0.3);\n    border-radius: 8px;\n    border: 1px dashed #10b981;\n    font-family: monospace;\n    color: #10b981;\n}",
+      "updatedBy": "fc8314b4f5e50d13"
+    },
+    {
+      "_id": "b832c2ff184b62b6",
+      "createdAt": "2026-05-27T02:24:35.263Z",
+      "updatedAt": "2026-05-27T02:24:35.263Z",
+      "project": "5d0b67f138151a76",
+      "filename": "script.js",
+      "language": "javascript",
+      "content": "// Dynamic Playground Logic\nconst button = document.getElementById('action-btn');\nconst output = document.getElementById('output');\n\nbutton.addEventListener('click', () => {\n    output.classList.remove('hidden');\n    output.innerText = 'Button clicked at: ' + new Date().toLocaleTimeString();\n    \n    // Trigger tiny console alert\n    console.log('Action button executed successfully!');\n});",
+      "updatedBy": "fc8314b4f5e50d13"
+    },
+    {
+      "_id": "4208d5c4a0c88ff5",
+      "createdAt": "2026-05-27T02:24:35.264Z",
+      "updatedAt": "2026-05-27T02:24:35.264Z",
+      "project": "5d0b67f138151a76",
+      "filename": "main.py",
+      "language": "python",
+      "content": "# Python Sandbox Playground\nprint(\"Welcome to the CollabMind Python Sandbox!\")\n\nx = 15\ny = 25\ntotal = x + y\n\nprint(\"Calculating standard sums...\")\nprint(\"Total of X and Y is:\")\nprint(total)\n",
+      "updatedBy": "fc8314b4f5e50d13"
+    },
+    {
+      "_id": "2ff5bb41ea2c8557",
+      "createdAt": "2026-05-27T02:40:29.222Z",
+      "updatedAt": "2026-05-27T02:40:36.207Z",
+      "project": "9abca347f9f0966d",
+      "filename": "app.c",
+      "language": "javascript",
+      "content": "#include <stdio.h>\n\nint main() {\n    printf(\"Hello, World!\\n\");\n    return 0;\n}\n",
+      "updatedBy": "fc8314b4f5e50d13"
+    },
+    {
+      "_id": "d5ddf679b88c5522",
+      "createdAt": "2026-05-27T04:09:19.025Z",
+      "updatedAt": "2026-05-27T04:09:19.025Z",
+      "project": "5d0b67f138151a76",
+      "filename": "demo.java",
+      "language": "java",
+      "content": "// Code file: demo.java\n",
+      "updatedBy": "fc8314b4f5e50d13"
+    },
+    {
+      "_id": "3e3abf1f7be22c3e",
+      "createdAt": "2026-05-27T06:10:19.696Z",
+      "updatedAt": "2026-05-27T06:11:15.475Z",
+      "project": "5d0b67f138151a76",
+      "filename": "demo1.c",
+      "language": "c",
+      "content": "// Code file: demo1.c\n#include <stdio.h> // Includes the Standard Input Output library\n\nint main() { // The entry point of every C program\n    printf(\"Hello, World!\\n\"); // Prints the text to the screen\n    return 0; // Indicates that the program finished successfully\n}\n",
+      "updatedBy": "7498126800e79160"
+    },
+    {
+      "_id": "d465ed5d17709b7f",
+      "createdAt": "2026-05-27T08:31:15.671Z",
+      "updatedAt": "2026-05-27T08:31:15.671Z",
+      "project": "9abca347f9f0966d",
+      "filename": "demo.java",
+      "language": "java",
+      "content": "// Code file: demo.java\n",
+      "updatedBy": "fc8314b4f5e50d13"
+    },
+    {
+      "_id": "667109ad6378c22f",
+      "createdAt": "2026-05-28T02:30:58.097Z",
+      "updatedAt": "2026-05-28T02:30:58.097Z",
+      "project": "149877fa76815446",
+      "filename": "demo3.rb",
+      "language": "ruby",
+      "content": "// Code file: demo3.rb\n",
+      "updatedBy": "fc8314b4f5e50d13"
+    }
+  ]
+}
