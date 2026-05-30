@@ -45,10 +45,6 @@ exports.generateIdeas = async (req, res, next) => {
 
     // Initialize Gemini AI
     const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({ 
-      model: 'gemini-1.5-flash',
-      generationConfig: { responseMimeType: "application/json" }
-    });
 
     const aiPrompt = `
       You are CollabMind AI, an elite project management assistant.
@@ -76,7 +72,42 @@ exports.generateIdeas = async (req, res, next) => {
       ]
     `;
 
-    const result = await model.generateContent(aiPrompt);
+    const modelsToTry = [
+      'gemini-1.5-flash',
+      'gemini-1.5-pro',
+      'gemini-pro',
+      'gemini-2.5-flash'
+    ];
+
+    let result = null;
+    let lastError = null;
+
+    for (const modelName of modelsToTry) {
+      try {
+        console.log(`[Gemini] Attempting content generation with model: ${modelName}`);
+        const config = { model: modelName };
+        if (modelName !== 'gemini-pro') {
+          config.generationConfig = { responseMimeType: "application/json" };
+        }
+        const model = genAI.getGenerativeModel(config);
+        result = await model.generateContent(aiPrompt);
+        if (result && result.response) {
+          console.log(`[Gemini] Success using model: ${modelName}`);
+          break;
+        }
+      } catch (err) {
+        console.error(`[Gemini] Model ${modelName} failed:`, err.message);
+        lastError = err;
+      }
+    }
+
+    if (!result) {
+      return res.status(500).json({
+        success: false,
+        error: `Gemini API failed on all attempted models. Last error: ${lastError ? lastError.message : 'Unknown'}`
+      });
+    }
+
     const response = await result.response;
     const text = response.text();
     
