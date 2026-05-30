@@ -21,8 +21,8 @@ export const SocketProvider = ({ children }) => {
       return;
     }
 
-    // Connect to same host via proxy path /socket.io
-    const socketInstance = io(window.location.origin, {
+    // Step 9: connect to Render backend in production; Vite proxy in local dev when VITE_API_URL is unset
+    const socketInstance = io(import.meta.env.VITE_API_URL || window.location.origin, {
       transports: ['websocket', 'polling'],
       autoConnect: true
     });

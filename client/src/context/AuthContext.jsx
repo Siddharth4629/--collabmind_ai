@@ -78,7 +78,7 @@ export const AuthProvider = ({ children }) => {
       }
     } catch (err) {
       if (!err.response) {
-        setError('Cannot reach server. Start the backend on port 5000 and try again.');
+        setError('Cannot reach server. Check that the backend is running and VITE_API_URL is set for production.');
       } else {
         setError(err.response?.data?.error || 'Invalid credentials');
       }
