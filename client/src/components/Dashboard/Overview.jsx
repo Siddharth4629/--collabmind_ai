@@ -63,53 +63,53 @@ export default function Overview({ projectId }) {
   return (
     <div className="space-y-6 animate-fade-in">
       {/* Metrics Row */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="glass-panel p-6 rounded-2xl border border-slate-800 flex justify-between items-center relative overflow-hidden group">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <div className="bg-slate-900 border border-slate-800 p-5 rounded-xl flex justify-between items-center transition">
           <div>
             <span className="text-slate-500 text-[10px] font-bold uppercase tracking-widest">Completed Tasks</span>
-            <h4 className="text-3xl font-extrabold text-white mt-1">
-              {doneCount} <span className="text-sm font-medium text-slate-500">/ {tasks.length}</span>
+            <h4 className="text-2xl font-bold text-white mt-1">
+              {doneCount} <span className="text-xs font-semibold text-slate-500">/ {tasks.length}</span>
             </h4>
-            <p className="text-slate-400 text-xs mt-1.5 flex items-center gap-1">
+            <p className="text-slate-500 text-xs mt-1.5 flex items-center gap-1.5">
               <CheckSquare className="w-3.5 h-3.5 text-emerald-400" />
               <span>Overall progress tracking</span>
             </p>
           </div>
-          <div className="w-12 h-12 bg-emerald-500/10 text-emerald-400 rounded-xl flex items-center justify-center">
-            <CheckSquare className="w-6 h-6" />
+          <div className="w-10 h-10 bg-slate-950 border border-slate-800 text-slate-400 rounded-lg flex items-center justify-center">
+            <CheckSquare className="w-5 h-5" />
           </div>
         </div>
 
-        <div className="glass-panel p-6 rounded-2xl border border-slate-800 flex justify-between items-center relative overflow-hidden group">
+        <div className="bg-slate-900 border border-slate-800 p-5 rounded-xl flex justify-between items-center transition">
           <div>
             <span className="text-slate-500 text-[10px] font-bold uppercase tracking-widest">Financial Spending</span>
-            <h4 className="text-3xl font-extrabold text-white mt-1">
+            <h4 className="text-2xl font-bold text-white mt-1">
               ${spentBudget.toLocaleString()}{' '}
-              <span className="text-sm font-medium text-slate-500">/ ${totalBudget.toLocaleString()}</span>
+              <span className="text-xs font-semibold text-slate-500">/ ${totalBudget.toLocaleString()}</span>
             </h4>
-            <p className="text-slate-400 text-xs mt-1.5 flex items-center gap-1">
+            <p className="text-slate-500 text-xs mt-1.5 flex items-center gap-1.5">
               <TrendingUp className="w-3.5 h-3.5 text-red-400" />
               <span>Budget depletion metrics</span>
             </p>
           </div>
-          <div className="w-12 h-12 bg-red-500/10 text-red-400 rounded-xl flex items-center justify-center">
-            <TrendingUp className="w-6 h-6" />
+          <div className="w-10 h-10 bg-slate-950 border border-slate-800 text-slate-400 rounded-lg flex items-center justify-center">
+            <TrendingUp className="w-5 h-5" />
           </div>
         </div>
 
-        <div className="glass-panel p-6 rounded-2xl border border-slate-800 flex justify-between items-center relative overflow-hidden group">
+        <div className="bg-slate-900 border border-slate-800 p-5 rounded-xl flex justify-between items-center transition">
           <div>
             <span className="text-slate-500 text-[10px] font-bold uppercase tracking-widest">Project Deadline</span>
-            <h4 className="text-xl font-bold text-white mt-2">
+            <h4 className="text-xl font-bold text-white mt-1.5">
               {project?.deadline ? new Date(project.deadline).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' }) : 'No Deadline'}
             </h4>
-            <p className="text-slate-400 text-xs mt-1.5 flex items-center gap-1">
+            <p className="text-slate-500 text-xs mt-1.5 flex items-center gap-1.5">
               <Calendar className="w-3.5 h-3.5 text-slate-500" />
               <span>Target completion timeline</span>
             </p>
           </div>
-          <div className="w-12 h-12 bg-blue-500/10 text-blue-400 rounded-xl flex items-center justify-center">
-            <Calendar className="w-6 h-6" />
+          <div className="w-10 h-10 bg-slate-950 border border-slate-800 text-slate-400 rounded-lg flex items-center justify-center">
+            <Calendar className="w-5 h-5" />
           </div>
         </div>
       </div>
@@ -117,8 +117,8 @@ export default function Overview({ projectId }) {
       {/* Visual Analytics row */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Tasks Recharts */}
-        <div className="glass-panel p-6 rounded-2xl border border-slate-800">
-          <h3 className="text-sm font-bold text-slate-300 uppercase tracking-wider mb-4">Task Status Distribution</h3>
+        <div className="bg-slate-900 p-6 rounded-xl border border-slate-800">
+          <h3 className="text-sm font-bold text-slate-350 uppercase tracking-wider mb-4">Task Status Distribution</h3>
           <div className="h-64 w-full">
             {tasks.length === 0 ? (
               <div className="h-full flex items-center justify-center text-xs text-slate-600 italic">No task statistics available</div>
@@ -128,9 +128,9 @@ export default function Overview({ projectId }) {
                   <XAxis dataKey="name" stroke="#64748b" fontSize={11} tickLine={false} />
                   <YAxis stroke="#64748b" fontSize={11} tickLine={false} allowDecimals={false} />
                   <Tooltip
-                    contentStyle={{ backgroundColor: '#0f172a', border: '1px solid #334155', borderRadius: '8px' }}
-                    labelStyle={{ color: '#fff', fontSize: '12px' }}
-                    itemStyle={{ color: '#10b981', fontSize: '12px' }}
+                    contentStyle={{ backgroundColor: 'var(--bg-900)', border: '1px solid var(--border-850)', borderRadius: '8px' }}
+                    labelStyle={{ color: 'var(--text-100)', fontSize: '12px' }}
+                    itemStyle={{ color: 'var(--text-100)', fontSize: '12px' }}
                   />
                   <Bar dataKey="value" radius={[6, 6, 0, 0]}>
                     {taskChartData.map((entry, idx) => (
@@ -144,7 +144,7 @@ export default function Overview({ projectId }) {
         </div>
 
         {/* Budget Recharts */}
-        <div className="glass-panel p-6 rounded-2xl border border-slate-800">
+        <div className="bg-slate-900 p-6 rounded-xl border border-slate-800">
           <h3 className="text-sm font-bold text-slate-300 uppercase tracking-wider mb-4">Financial Allocation</h3>
           <div className="h-64 flex flex-col md:flex-row items-center justify-around">
             {totalBudget === 0 ? (

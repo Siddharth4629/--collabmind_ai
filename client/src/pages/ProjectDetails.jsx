@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
+import { useSocket } from '../context/SocketContext';
 import Sidebar from '../components/Layout/Sidebar';
 import Navbar from '../components/Layout/Navbar';
 import Overview from '../components/Dashboard/Overview';
@@ -22,6 +23,7 @@ export default function ProjectDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { socket, joinProject, leaveProject } = useSocket();
   const [project, setProject] = useState(null);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('Overview');
@@ -30,6 +32,17 @@ export default function ProjectDetails() {
   const [inviteError, setInviteError] = useState(null);
   const [inviteSuccess, setInviteSuccess] = useState(false);
   const [settingsLoading, setSettingsLoading] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(
+    localStorage.getItem('sidebar-collapsed') === 'true'
+  );
+
+  useEffect(() => {
+    const handleToggle = () => {
+      setSidebarCollapsed(localStorage.getItem('sidebar-collapsed') === 'true');
+    };
+    window.addEventListener('sidebar-toggle', handleToggle);
+    return () => window.removeEventListener('sidebar-toggle', handleToggle);
+  }, []);
 
   const fetchProjectDetails = async () => {
     try {
@@ -50,6 +63,15 @@ export default function ProjectDetails() {
       fetchProjectDetails();
     }
   }, [id]);
+
+  useEffect(() => {
+    if (id && socket) {
+      joinProject(id);
+      return () => {
+        leaveProject(id);
+      };
+    }
+  }, [id, socket]);
 
   const handleProjectUpdate = (updatedProject) => {
     setProject(updatedProject);
@@ -119,7 +141,7 @@ export default function ProjectDetails() {
     return (
       <div className="flex h-screen bg-slate-950">
         <Sidebar />
-        <div className="flex-1 pl-64">
+        <div className={`flex-1 transition-all duration-300 ${sidebarCollapsed ? 'pl-20' : 'pl-64'}`}>
           <Navbar title="Loading project..." />
           <main className="pt-16 p-8 flex items-center justify-center h-full">
             <div className="flex flex-col items-center gap-3">
@@ -158,10 +180,10 @@ export default function ProjectDetails() {
     <div className="flex min-h-screen bg-slate-950 text-slate-100 font-sans">
       <Sidebar />
 
-      <div className="flex-1 pl-64 flex flex-col">
+      <div className={`flex-1 flex flex-col transition-all duration-300 ${sidebarCollapsed ? 'pl-20' : 'pl-64'}`}>
         <Navbar title={project.name} />
 
-        <main className="flex-1 pt-16 p-6 space-y-6 overflow-x-hidden">
+        <main className="flex-1 pt-16 p-6 space-y-6 overflow-x-auto">
           
           {/* Project Details Banner subheader */}
           <div className="p-6 bg-slate-900/40 rounded-2xl border border-slate-800/80 backdrop-blur-md relative overflow-hidden shadow-lg flex flex-col md:flex-row justify-between md:items-center gap-4">

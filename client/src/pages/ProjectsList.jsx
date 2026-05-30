@@ -12,6 +12,17 @@ export default function ProjectsList() {
   const navigate = useNavigate();
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(
+    localStorage.getItem('sidebar-collapsed') === 'true'
+  );
+
+  useEffect(() => {
+    const handleToggle = () => {
+      setSidebarCollapsed(localStorage.getItem('sidebar-collapsed') === 'true');
+    };
+    window.addEventListener('sidebar-toggle', handleToggle);
+    return () => window.removeEventListener('sidebar-toggle', handleToggle);
+  }, []);
   
   // Create Project Modal States
   const [modalOpen, setModalOpen] = useState(false);
@@ -64,10 +75,10 @@ export default function ProjectsList() {
         
         // Trigger celebratory animation
         confetti({
-          particleCount: 80,
-          spread: 60,
-          origin: { y: 0.6 },
-          colors: ['#10b981', '#0ea5e9']
+          particleCount: 50,
+          spread: 45,
+          origin: { y: 0.65 },
+          colors: ['#6366f1', '#94a3b8']
         });
       }
     } catch (err) {
@@ -84,64 +95,64 @@ export default function ProjectsList() {
     <div className="min-h-screen bg-brand-darker flex font-sans">
       <Sidebar />
 
-      <div className="flex-1 pl-64 pt-16">
+      <div className={`flex-1 pt-16 transition-all duration-300 ${sidebarCollapsed ? 'pl-20' : 'pl-64'}`}>
         <Navbar title="Workspace Overview" />
 
         <main className="p-8 space-y-8 animate-fade-in max-w-7xl mx-auto">
           {/* Dashboard Metrics Panels */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            <div className="glass-panel rounded-2xl p-6 border border-slate-800 flex items-center gap-4 hover:border-slate-700 transition">
-              <div className="p-3 bg-emerald-500/10 text-emerald-400 rounded-xl">
-                <FolderKanban className="w-6 h-6" />
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-5">
+            <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 hover:border-slate-750 transition flex items-center gap-4">
+              <div className="p-2 bg-slate-950 border border-slate-800 text-slate-400 rounded-lg">
+                <FolderKanban className="w-5 h-5" />
               </div>
               <div>
-                <p className="text-slate-500 text-xs font-semibold uppercase tracking-wider">Total Projects</p>
-                <h3 className="text-2xl font-bold text-white mt-1">{projects.length}</h3>
+                <p className="text-slate-500 text-[10px] font-bold uppercase tracking-widest">Total Projects</p>
+                <h3 className="text-xl font-bold text-white mt-0.5">{projects.length}</h3>
               </div>
             </div>
 
-            <div className="glass-panel rounded-2xl p-6 border border-slate-800 flex items-center gap-4 hover:border-slate-700 transition">
-              <div className="p-3 bg-sky-500/10 text-sky-400 rounded-xl">
-                <DollarSign className="w-6 h-6" />
+            <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 hover:border-slate-750 transition flex items-center gap-4">
+              <div className="p-2 bg-slate-950 border border-slate-800 text-slate-400 rounded-lg">
+                <DollarSign className="w-5 h-5" />
               </div>
               <div>
-                <p className="text-slate-500 text-xs font-semibold uppercase tracking-wider">Allocated Budgets</p>
-                <h3 className="text-2xl font-bold text-white mt-1">${totalBudget.toLocaleString()}</h3>
+                <p className="text-slate-500 text-[10px] font-bold uppercase tracking-widest">Allocated Budgets</p>
+                <h3 className="text-xl font-bold text-white mt-0.5">${totalBudget.toLocaleString()}</h3>
               </div>
             </div>
 
-            <div className="glass-panel rounded-2xl p-6 border border-slate-800 flex items-center gap-4 hover:border-slate-700 transition">
-              <div className="p-3 bg-amber-500/10 text-amber-400 rounded-xl">
-                <DollarSign className="w-6 h-6" />
+            <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 hover:border-slate-750 transition flex items-center gap-4">
+              <div className="p-2 bg-slate-950 border border-slate-800 text-slate-400 rounded-lg">
+                <DollarSign className="w-5 h-5" />
               </div>
               <div>
-                <p className="text-slate-500 text-xs font-semibold uppercase tracking-wider">Financial Depletion</p>
-                <h3 className="text-2xl font-bold text-white mt-1">${totalSpent.toLocaleString()}</h3>
+                <p className="text-slate-500 text-[10px] font-bold uppercase tracking-widest">Financial Depletion</p>
+                <h3 className="text-xl font-bold text-white mt-0.5">${totalSpent.toLocaleString()}</h3>
               </div>
             </div>
 
-            <div className="glass-panel rounded-2xl p-6 border border-slate-800 flex items-center gap-4 hover:border-slate-700 transition">
-              <div className="p-3 bg-purple-500/10 text-purple-400 rounded-xl">
-                <Users className="w-6 h-6" />
+            <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 hover:border-slate-750 transition flex items-center gap-4">
+              <div className="p-2 bg-slate-950 border border-slate-800 text-slate-400 rounded-lg">
+                <Users className="w-5 h-5" />
               </div>
               <div>
-                <p className="text-slate-500 text-xs font-semibold uppercase tracking-wider">Total Collaborators</p>
-                <h3 className="text-2xl font-bold text-white mt-1">{totalMembersCount}</h3>
+                <p className="text-slate-500 text-[10px] font-bold uppercase tracking-widest">Collaborators</p>
+                <h3 className="text-xl font-bold text-white mt-0.5">{totalMembersCount}</h3>
               </div>
             </div>
           </div>
 
           {/* Action Header */}
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between pt-4 border-t border-slate-900/60">
             <div>
-              <h2 className="text-2xl font-bold text-white tracking-tight">Active Project Boards</h2>
-              <p className="text-slate-400 text-xs mt-1">Select a workspace to enter real-time canvas whiteboard and tasks.</p>
+              <h2 className="text-xl font-bold text-white tracking-tight">Active Project Boards</h2>
+              <p className="text-slate-500 text-xs mt-1">Select a workspace to enter real-time canvas whiteboard and tasks.</p>
             </div>
             
             {user?.role !== 'Viewer' ? (
               <button
                 onClick={() => setModalOpen(true)}
-                className="bg-emerald-500 hover:bg-emerald-400 text-slate-905 px-4 py-2.5 rounded-xl font-semibold text-sm shadow flex items-center gap-2 transition active:scale-95"
+                className="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2.5 rounded-xl font-semibold text-xs transition active:scale-95 flex items-center gap-2"
               >
                 <Plus className="w-4 h-4" strokeWidth={2.5} />
                 <span>Create Project</span>
@@ -178,12 +189,13 @@ export default function ProjectsList() {
                   <div
                     key={proj._id}
                     onClick={() => navigate(`/project/${proj._id}`)}
-                    className="glass-panel rounded-2xl p-6 border border-slate-800 hover:border-emerald-500/50 hover:glow-emerald transition duration-350 cursor-pointer flex flex-col justify-between group relative overflow-hidden h-60"
+                    className="bg-slate-900 border border-slate-800 hover:border-indigo-500/50 transition-all duration-200 cursor-pointer flex flex-col justify-between rounded-xl p-5 group relative h-60"
                   >
                     <div className="space-y-3">
                       {/* Card Top */}
                       <div className="flex justify-between items-start">
-                        <span className="text-[10px] uppercase font-bold tracking-wider px-2.5 py-1 rounded-md bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                        <span className="text-[10px] font-semibold tracking-wider px-2 py-0.5 rounded-full bg-slate-950 border border-slate-850 text-slate-300 flex items-center gap-1.5 w-fit">
+                          <span className={`w-1.5 h-1.5 rounded-full ${proj.status === 'Completed' ? 'bg-emerald-500' : 'bg-indigo-400'}`}></span>
                           {proj.status}
                         </span>
                         
@@ -193,42 +205,42 @@ export default function ProjectsList() {
                         </div>
                       </div>
 
-                      <h3 className="text-lg font-bold text-white group-hover:text-emerald-400 transition truncate">
+                      <h3 className="text-base font-semibold text-white group-hover:text-indigo-400 transition truncate">
                         {proj.name}
                       </h3>
-                      <p className="text-slate-400 text-xs line-clamp-3 leading-relaxed">
+                      <p className="text-slate-500 text-xs line-clamp-3 leading-relaxed">
                         {proj.description}
                       </p>
                     </div>
 
                     {/* Budget progress indicator */}
-                    <div className="pt-4 border-t border-slate-900 mt-4 space-y-2">
-                      <div className="flex justify-between items-center text-[10px] font-semibold text-slate-500">
+                    <div className="pt-4 border-t border-slate-800 mt-4 space-y-2">
+                      <div className="flex justify-between items-center text-[9px] font-bold text-slate-500 tracking-wider">
                         <span>BUDGET UTILIZATION</span>
-                        <span className={percentUsed >= 100 ? 'text-red-400 font-bold' : percentUsed >= 80 ? 'text-amber-400 font-bold' : 'text-emerald-400'}>
+                        <span className={percentUsed >= 100 ? 'text-red-400' : percentUsed >= 80 ? 'text-amber-400' : 'text-indigo-400'}>
                           {percentUsed}%
                         </span>
                       </div>
                       
-                      <div className="w-full bg-slate-950 rounded-full h-2 overflow-hidden border border-slate-900">
+                      <div className="w-full bg-slate-950 rounded-full h-1 overflow-hidden border border-slate-850">
                         <div
                           className={`h-full transition-all duration-500 rounded-full ${
                             percentUsed >= 100
-                              ? 'bg-gradient-to-r from-red-500 to-rose-600'
+                              ? 'bg-red-500'
                               : percentUsed >= 80
-                              ? 'bg-gradient-to-r from-amber-500 to-yellow-600'
-                              : 'bg-gradient-to-r from-emerald-500 to-teal-600'
+                              ? 'bg-amber-500'
+                              : 'bg-indigo-500'
                           }`}
                           style={{ width: `${percentUsed}%` }}
                         ></div>
                       </div>
                       
-                      <div className="flex justify-between items-center text-[10px] text-slate-400 pt-1">
+                      <div className="flex justify-between items-center text-[10px] text-slate-500 pt-1">
                         <div className="flex items-center gap-1">
                           <Calendar className="w-3 h-3 text-slate-500" />
-                          <span>{proj.deadline ? new Date(proj.deadline).toLocaleDateString() : 'No date'}</span>
+                          <span>{proj.deadline ? new Date(proj.deadline).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' }) : 'No deadline'}</span>
                         </div>
-                        <span className="font-semibold text-slate-300">
+                        <span className="font-semibold text-slate-400">
                           ${spent.toLocaleString()} / ${total.toLocaleString()}
                         </span>
                       </div>

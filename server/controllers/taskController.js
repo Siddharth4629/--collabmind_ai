@@ -54,7 +54,7 @@ exports.getTasks = async (req, res, next) => {
 // @access  Private (Project members only)
 exports.createTask = async (req, res, next) => {
   try {
-    const { title, description, status, priority, project: projectId, assignee, dueDate, subtasks } = req.body;
+    const { title, description, status, priority, project: projectId, assignee, dueDate, startDate, subtasks } = req.body;
 
     if (!title || !projectId) {
       return res.status(400).json({ success: false, error: 'Task title and project ID are required' });
@@ -71,6 +71,7 @@ exports.createTask = async (req, res, next) => {
       project: projectId,
       assignee: assignee || null,
       dueDate: dueDate || null,
+      startDate: startDate || null,
       order: taskCount,
       subtasks: subtasks || []
     });
@@ -98,7 +99,7 @@ exports.updateTask = async (req, res, next) => {
       return res.status(404).json({ success: false, error: 'Task not found' });
     }
 
-    const { title, description, status, priority, assignee, dueDate, subtasks } = req.body;
+    const { title, description, status, priority, assignee, dueDate, startDate, subtasks } = req.body;
 
     task.title = title || task.title;
     task.description = description !== undefined ? description : task.description;
@@ -106,6 +107,7 @@ exports.updateTask = async (req, res, next) => {
     task.priority = priority || task.priority;
     task.assignee = assignee !== undefined ? assignee : task.assignee;
     task.dueDate = dueDate !== undefined ? dueDate : task.dueDate;
+    task.startDate = startDate !== undefined ? startDate : task.startDate;
     task.subtasks = subtasks || task.subtasks;
 
     await task.save();

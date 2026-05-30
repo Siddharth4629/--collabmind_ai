@@ -2,13 +2,15 @@ import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { useAuth } from '../../context/AuthContext';
 import { useSocket } from '../../context/SocketContext';
+import { useTheme } from '../../context/ThemeContext';
 import { 
-  FileText, Plus, Save, Trash2, History, X, Sparkles, Check, FileCode, RotateCcw
+  FileText, Plus, Save, Trash2, History, X, Sparkles, Check, FileCode, RotateCcw, Download
 } from 'lucide-react';
 
 export default function Editor({ projectId }) {
   const { user } = useAuth();
   const { socket } = useSocket();
+  const { theme } = useTheme();
   const [notes, setNotes] = useState([]);
   const [selectedNote, setSelectedNote] = useState(null);
   const [noteTitle, setNoteTitle] = useState('');
@@ -76,10 +78,34 @@ export default function Editor({ projectId }) {
       );
     };
 
+    const handleNoteCreated = ({ note }) => {
+      setNotes((prev) => {
+        if (prev.some((n) => n._id === note._id)) return prev;
+        return [note, ...prev];
+      });
+    };
+
+    const handleNoteDeleted = ({ noteId }) => {
+      setNotes((prev) => prev.filter((n) => n._id !== noteId));
+      setSelectedNote((curr) => {
+        if (curr && curr._id === noteId) {
+          setNoteTitle('');
+          setNoteContent('');
+          setNoteDetails(null);
+          return null;
+        }
+        return curr;
+      });
+    };
+
     socket.on('note-updated', handleNoteUpdated);
+    socket.on('note-created', handleNoteCreated);
+    socket.on('note-deleted', handleNoteDeleted);
 
     return () => {
       socket.off('note-updated', handleNoteUpdated);
+      socket.off('note-created', handleNoteCreated);
+      socket.off('note-deleted', handleNoteDeleted);
     };
   }, [socket, selectedNote]);
 
@@ -114,6 +140,12 @@ export default function Editor({ projectId }) {
       });
       if (res.data.success) {
         await fetchNotes(res.data.data._id);
+        if (socket) {
+          socket.emit('note-create', {
+            projectId,
+            note: res.data.data
+          });
+        }
       }
     } catch (err) {
       console.error('Error creating note:', err);
@@ -199,11 +231,28 @@ export default function Editor({ projectId }) {
     try {
       const res = await axios.delete(`/api/notes/${selectedNote._id}`);
       if (res.data.success) {
+        if (socket) {
+          socket.emit('note-delete', {
+            projectId,
+            noteId: selectedNote._id
+          });
+        }
         fetchNotes();
       }
     } catch (err) {
       console.error('Error deleting note:', err);
     }
+  };
+
+  const handleDownloadNote = () => {
+    if (!selectedNote) return;
+    const element = document.createElement("a");
+    const file = new Blob([noteContent], { type: 'text/markdown' });
+    element.href = URL.createObjectURL(file);
+    element.download = `${noteTitle || 'Untitled Note'}.md`;
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
   };
 
   // Simple custom line-by-line diff algorithm
@@ -342,6 +391,14 @@ export default function Editor({ projectId }) {
 
             <div className="flex items-center gap-2">
               <button
+                onClick={handleDownloadNote}
+                className="p-2 bg-slate-950/40 border border-slate-850 hover:border-indigo-500/30 hover:bg-indigo-500/5 hover:text-indigo-400 rounded-lg text-slate-400 transition-all"
+                title="Export Note (.md)"
+              >
+                <Download className="w-4 h-4" />
+              </button>
+
+              <button
                 onClick={() => setIsPreview(!isPreview)}
                 className={`px-3 py-1.5 rounded-lg text-xs border transition-all ${
                   isPreview
@@ -382,7 +439,7 @@ export default function Editor({ projectId }) {
             {/* Editor Workspace */}
             <div className="flex-1 flex flex-col p-6 overflow-hidden">
               {isPreview ? (
-                <div className="flex-1 overflow-y-auto bg-slate-950/30 rounded-xl border border-slate-850 p-6 text-slate-300 prose prose-invert max-w-none scrollbar-thin">
+                <div className={`flex-1 overflow-y-auto bg-slate-950/30 rounded-xl border border-slate-850 p-6 text-slate-350 prose max-w-none scrollbar-thin ${theme === 'dark' ? 'prose-invert' : ''}`}>
                   {noteContent ? (
                     noteContent.split('\n').map((line, idx) => {
                       if (line.startsWith('# ')) {
@@ -499,12 +556,18 @@ export default function Editor({ projectId }) {
         </div>
       ) : (
         <div className="flex-1 flex flex-col items-center justify-center p-6 text-center">
-          <FileText className="w-16 h-16 text-slate-800 mb-4 animate-pulse" />
-          <h3 className="text-slate-300 font-medium mb-1 text-base">Select or Create a Note</h3>
-          <p className="text-xs text-slate-500 max-w-sm mb-4">Store documentation, project requirements, meeting items, and compare previous revisions.</p>
+          <svg className="w-16 h-16 text-slate-500 mb-5 svg-float-subtle" viewBox="0 0 64 64" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <rect x="16" y="18" width="32" height="38" rx="3" className="svg-draw-path" />
+            <path d="M24 18V13C24 12.4 24.4 12 25 12H39C39.6 12 40 12.4 40 13V18" className="svg-draw-path" />
+            <line x1="22" y1="28" x2="42" y2="28" className="svg-draw-path" />
+            <line x1="22" y1="36" x2="36" y2="36" className="svg-draw-path" />
+            <line x1="22" y1="44" x2="40" y2="44" className="svg-draw-path" />
+          </svg>
+          <h3 className="text-slate-300 font-semibold mb-1 text-sm tracking-tight">Select or Create a Note</h3>
+          <p className="text-xs text-slate-500 max-w-sm mb-5 leading-relaxed">Store documentation, project requirements, meeting items, and compare previous revisions.</p>
           <button
             onClick={handleCreateNote}
-            className="px-4 py-2 text-xs font-semibold rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white shadow-[0_0_15px_rgba(99,102,241,0.2)] hover:shadow-[0_0_20px_rgba(99,102,241,0.35)] transition-all flex items-center gap-2"
+            className="px-4 py-2 text-xs font-semibold rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white transition-all flex items-center gap-2"
           >
             <Plus className="w-4 h-4" /> Create First Note
           </button>

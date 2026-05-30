@@ -1,0 +1,65 @@
+
+> collabmind-workspace@1.0.0 dev
+> concurrently "npm run server" "npm run client"
+
+(node:12184) [DEP0060] DeprecationWarning: The `util._extend` API is deprecated. Please use Object.assign() instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+[0] 
+[0] > collabmind-workspace@1.0.0 server
+[0] > npm run dev --prefix server
+[0] 
+[1] 
+[1] > collabmind-workspace@1.0.0 client
+[1] > npm run dev --prefix client
+[1] 
+[0] 
+[0] > collabmind-server@1.0.0 dev
+[0] > nodemon server.js
+[0] 
+[1] 
+[1] > collabmind-client@1.0.0 dev
+[1] > vite
+[1] 
+[1] [2m9:25:48 am[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m Re-optimizing dependencies because vite config has changed
+[1] 
+[1]   [32m[1mVITE[22m v8.0.14[39m  [2mready in [0m[1m900[22m[2m[0m ms[22m
+[1] 
+[1]   [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m5173[22m/[39m
+[1] [2m  [32m➜[39m  [1mNetwork[22m[2m: use [22m[1m--host[22m[2m to expose[22m
+[0] [33m[nodemon] 3.1.14[39m
+[0] [33m[nodemon] to restart at any time, enter `rs`[39m
+[0] [33m[nodemon] watching path(s): *.*[39m
+[0] [33m[nodemon] watching extensions: js,mjs,cjs,json[39m
+[0] [32m[nodemon] starting `node server.js`[39m
+[1] [2m9:25:51 am[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [optimizer] bundling dependencies...
+[0] Attempting to connect to MongoDB...
+[0] MongoDB Connected successfully: ac-57t6shy-shard-00-00.slzdnni.mongodb.net
+[1] [2m9:25:53 am[22m [31m[1m[vite][22m[39m [31mws proxy error:[39m
+[1] AggregateError [ECONNREFUSED]: 
+[1]     at internalConnectMultiple (node:net:1134:18)
+[1]     at afterConnectMultiple (node:net:1715:7)
+[0] 
+[0] 🚀 CollabMind server is live in [development] mode on port 5000
+[0] 🌐 API Health Check: http://localhost:5000/api/health
+[0] 🔌 WebSockets: Ready and listening
+[0] ================================================================
+[0] 
+[0] Socket connected: AUQsfB4fmHg1xsM2AAAB
+[1] [2m9:27:08 am[22m [33m[1m[vite][22m[39m [33m[2m(client)[22m[39m [2m[console.warn] [22m⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+[1] [2m9:27:08 am[22m [33m[1m[vite][22m[39m [33m[2m(client)[22m[39m [2m[console.warn] [22m⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+[1] [2m9:27:18 am[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mFailed to load project switcher lists: Request failed with status code 401
+[0] Socket connected: _09Iskcq_nKuPvc9AAAD
+[1] [2m9:27:18 am[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mFailed to load projects list: Request failed with status code 401
+[0] Socket disconnected: _09Iskcq_nKuPvc9AAAD
+[0] Socket connected: ccPuHTnZJTTrMeu1AAAF
+[0] User Siddharth  (6a17b101f9aff9447ddeef08) joined project room: 6a17b179f9aff9447ddeef27
+[0] User Siddharth  left project room: 6a17b179f9aff9447ddeef27
+[0] User Siddharth  (6a17b101f9aff9447ddeef08) joined project room: 6a17b179f9aff9447ddeef27
+[0] User Siddharth  (6a17b101f9aff9447ddeef08) joined project room: 6a17b179f9aff9447ddeef27
+[0] User Siddharth  left project room: 6a17b179f9aff9447ddeef27
+[0] User Siddharth  (6a17b101f9aff9447ddeef08) joined project room: 6a17b179f9aff9447ddeef27
+[0] User Siddharth  left project room: 6a17b179f9aff9447ddeef27
+[0] User Siddharth  left project room: 6a17b179f9aff9447ddeef27
+[0] User Siddharth  (6a17b101f9aff9447ddeef08) joined project room: 6a17b179f9aff9447ddeef27
+[0] User Siddharth  left project room: 6a17b179f9aff9447ddeef27
+[0] User Siddharth  (6a17b101f9aff9447ddeef08) joined project room: 6a17b179f9aff9447ddeef27

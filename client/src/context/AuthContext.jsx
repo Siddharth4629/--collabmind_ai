@@ -88,6 +88,19 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  // Update Profile
+  const updateProfile = async (fields) => {
+    try {
+      const res = await axios.put('/api/auth/me', fields);
+      if (res.data.success) {
+        setUser(res.data.data);
+        return { success: true };
+      }
+    } catch (err) {
+      return { success: false, error: err.response?.data?.error || 'Failed to update profile' };
+    }
+  };
+
   // Logout
   const logout = () => {
     setToken('');
@@ -102,6 +115,7 @@ export const AuthProvider = ({ children }) => {
     register,
     login,
     logout,
+    updateProfile,
     setError
   };
 

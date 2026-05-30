@@ -27,6 +27,30 @@ const userSchema = new mongoose.Schema({
     minlength: 6,
     select: false
   },
+  bio: {
+    type: String,
+    default: ''
+  },
+  phone: {
+    type: String,
+    default: ''
+  },
+  location: {
+    type: String,
+    default: ''
+  },
+  skills: {
+    type: String,
+    default: ''
+  },
+  github: {
+    type: String,
+    default: ''
+  },
+  linkedin: {
+    type: String,
+    default: ''
+  },
   createdAt: {
     type: Date,
     default: Date.now

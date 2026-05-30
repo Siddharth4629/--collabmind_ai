@@ -33,6 +33,9 @@ const taskSchema = new mongoose.Schema({
   dueDate: {
     type: Date
   },
+  startDate: {
+    type: Date
+  },
   order: {
     type: Number,
     default: 0
@@ -46,7 +49,19 @@ const taskSchema = new mongoose.Schema({
       isCompleted: {
         type: Boolean,
         default: false
-      }
+      },
+      subsubtasks: [
+        {
+          title: {
+            type: String,
+            required: true
+          },
+          isCompleted: {
+            type: Boolean,
+            default: false
+          }
+        }
+      ]
     }
   ],
   comments: [

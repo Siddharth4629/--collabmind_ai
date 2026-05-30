@@ -795,6 +795,21 @@
           "createdAt": "2026-05-23T05:53:41.931Z"
         }
       ]
+    },
+    {
+      "_id": "71d39c4a4713efd4",
+      "createdAt": "2026-05-30T03:11:47.232Z",
+      "updatedAt": "2026-05-30T03:11:47.232Z",
+      "title": "Test Note Title",
+      "content": "Test content here",
+      "project": "149877fa76815446",
+      "versions": [
+        {
+          "content": "Test content here",
+          "updatedBy": "fc8314b4f5e50d13",
+          "createdAt": "2026-05-30T03:11:47.231Z"
+        }
+      ]
     }
   ],
   "chats": [

@@ -27,6 +27,7 @@ export default function Board({ projectId }) {
   const [taskPriority, setTaskPriority] = useState('Medium');
   const [taskAssignee, setTaskAssignee] = useState('');
   const [taskDueDate, setTaskDueDate] = useState('');
+  const [taskStartDate, setTaskStartDate] = useState('');
 
   // Task detail card popup
   const [activeTask, setActiveTask] = useState(null);
@@ -150,7 +151,8 @@ export default function Board({ projectId }) {
         priority: taskPriority,
         project: projectId,
         assignee: taskAssignee || null,
-        dueDate: taskDueDate || null
+        dueDate: taskDueDate || null,
+        startDate: taskStartDate || null
       });
 
       if (res.data.success) {
@@ -160,6 +162,7 @@ export default function Board({ projectId }) {
         setTaskPriority('Medium');
         setTaskAssignee('');
         setTaskDueDate('');
+        setTaskStartDate('');
         fetchTasks();
       }
     } catch (err) {
@@ -245,7 +248,7 @@ export default function Board({ projectId }) {
   return (
     <div className="space-y-6 animate-fade-in">
       {/* Task Board Matrix */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 h-[calc(100vh-250px)] overflow-y-auto pr-2">
+      <div className="flex flex-col md:flex-row gap-6 h-[calc(100vh-250px)] overflow-x-auto pb-4 pr-2">
         {COLUMNS.map((col) => {
           const colTasks = tasks.filter((t) => t.status === col.id);
           
@@ -254,7 +257,7 @@ export default function Board({ projectId }) {
               key={col.id}
               onDragOver={(e) => e.preventDefault()}
               onDrop={(e) => handleDrop(e, col.id)}
-              className={`rounded-2xl border-t-4 ${col.color} p-4 flex flex-col min-h-[350px] border border-slate-900`}
+              className={`rounded-2xl border-t-4 ${col.color} p-4 flex flex-col min-h-[350px] md:h-full w-full md:w-80 md:shrink-0 border border-slate-900`}
             >
               {/* Column Header */}
               <div className="flex justify-between items-center mb-4">
@@ -343,12 +346,21 @@ export default function Board({ projectId }) {
                             )}
                           </div>
 
-                          {task.dueDate && (
-                            <div className="flex items-center gap-1 text-slate-400">
-                              <Calendar className="w-3 h-3 text-slate-500" />
-                              <span>{new Date(task.dueDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}</span>
-                            </div>
-                          )}
+                          <div className="flex items-center gap-2">
+                            {task.startDate && (
+                              <div className="flex items-center gap-1 text-slate-400" title={`Starts: ${new Date(task.startDate).toLocaleDateString()}`}>
+                                <Calendar className="w-3 h-3 text-indigo-400" />
+                                <span>{new Date(task.startDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}</span>
+                              </div>
+                            )}
+                            {task.dueDate && (
+                              <div className="flex items-center gap-1 text-slate-400" title={`Due: ${new Date(task.dueDate).toLocaleDateString()}`}>
+                                {task.startDate && <span className="text-slate-500">→</span>}
+                                <Calendar className="w-3 h-3 text-slate-500" />
+                                <span>{new Date(task.dueDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}</span>
+                              </div>
+                            )}
+                          </div>
                         </div>
                       </div>
                     );
@@ -426,14 +438,26 @@ export default function Board({ projectId }) {
                 </div>
               </div>
 
-              <div>
-                <label className="block text-slate-400 text-xs font-semibold uppercase tracking-wider mb-2">Due Date</label>
-                <input
-                  type="date"
-                  value={taskDueDate}
-                  onChange={(e) => setTaskDueDate(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl py-2.5 px-4 text-slate-100 text-sm focus:border-emerald-500 transition"
-                />
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-slate-400 text-xs font-semibold uppercase tracking-wider mb-2">Start Date</label>
+                  <input
+                    type="date"
+                    value={taskStartDate}
+                    onChange={(e) => setTaskStartDate(e.target.value)}
+                    className="w-full bg-slate-950 border border-slate-800 rounded-xl py-2.5 px-4 text-slate-100 text-sm focus:border-emerald-500 transition"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-slate-400 text-xs font-semibold uppercase tracking-wider mb-2">Due Date</label>
+                  <input
+                    type="date"
+                    value={taskDueDate}
+                    onChange={(e) => setTaskDueDate(e.target.value)}
+                    className="w-full bg-slate-950 border border-slate-800 rounded-xl py-2.5 px-4 text-slate-100 text-sm focus:border-emerald-500 transition"
+                  />
+                </div>
               </div>
 
               <div className="flex gap-3 justify-end pt-4">
@@ -483,10 +507,66 @@ export default function Board({ projectId }) {
                   <X className="w-5 h-5" />
                 </button>
               </div>
-            </div>
-
-            {/* Modal Body (Scrollable contents) */}
+            </div>            {/* Modal Body (Scrollable contents) */}
             <div className="flex-1 overflow-y-auto space-y-6 pr-2 mb-4">
+              
+              {/* Meta Grid (Assignee, Priority, Start/Due Date Editors) */}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4 bg-slate-950/30 rounded-xl border border-slate-900 text-xs">
+                <div>
+                  <span className="text-slate-400 font-semibold block mb-1">Assignee</span>
+                  <span className="text-slate-200">
+                    {activeTask.assignee?.name || 
+                      (typeof activeTask.assignee === 'string' && projectMembers.find(m => (m.user?._id || m.user) === activeTask.assignee)?.user?.name) || 
+                      'Unassigned'}
+                  </span>
+                </div>
+                <div>
+                  <span className="text-slate-400 font-semibold block mb-1">Priority</span>
+                  <span className={`font-semibold ${
+                    activeTask.priority === 'High' ? 'text-red-400' :
+                    activeTask.priority === 'Medium' ? 'text-amber-400' : 'text-emerald-400'
+                  }`}>
+                    {activeTask.priority}
+                  </span>
+                </div>
+                <div>
+                  <span className="text-slate-400 font-semibold block mb-1">Start Date</span>
+                  {user?.role === 'Viewer' ? (
+                    <span className="text-slate-200">
+                      {activeTask.startDate ? new Date(activeTask.startDate).toLocaleDateString() : 'Not set'}
+                    </span>
+                  ) : (
+                    <input
+                      type="date"
+                      value={activeTask.startDate ? activeTask.startDate.substring(0, 10) : ''}
+                      onChange={(e) => {
+                        const updated = { ...activeTask, startDate: e.target.value || null };
+                        handleUpdateTaskDetail(updated);
+                      }}
+                      className="bg-transparent text-slate-200 border-b border-transparent focus:border-indigo-500 focus:outline-none py-0.5 px-1 max-w-[120px] transition-all"
+                    />
+                  )}
+                </div>
+                <div>
+                  <span className="text-slate-400 font-semibold block mb-1">Due Date</span>
+                  {user?.role === 'Viewer' ? (
+                    <span className="text-slate-200">
+                      {activeTask.dueDate ? new Date(activeTask.dueDate).toLocaleDateString() : 'Not set'}
+                    </span>
+                  ) : (
+                    <input
+                      type="date"
+                      value={activeTask.dueDate ? activeTask.dueDate.substring(0, 10) : ''}
+                      onChange={(e) => {
+                        const updated = { ...activeTask, dueDate: e.target.value || null };
+                        handleUpdateTaskDetail(updated);
+                      }}
+                      className="bg-transparent text-slate-200 border-b border-transparent focus:border-indigo-500 focus:outline-none py-0.5 px-1 max-w-[120px] transition-all"
+                    />
+                  )}
+                </div>
+              </div>
+
               {activeTask.description && (
                 <div>
                   <h4 className="text-slate-400 text-[10px] font-bold uppercase tracking-wider mb-2">Description</h4>
@@ -499,26 +579,118 @@ export default function Board({ projectId }) {
               {/* Subtask Checklist Section */}
               <div>
                 <h4 className="text-slate-400 text-[10px] font-bold uppercase tracking-wider mb-2">Subtasks Checklist</h4>
-                <div className="space-y-2 mb-3">
+                <div className="space-y-3 mb-4">
                   {(!activeTask.subtasks || activeTask.subtasks.length === 0) ? (
                     <p className="text-slate-600 text-xs italic">No checklist subtasks declared.</p>
                   ) : (
                     activeTask.subtasks.map((sub, idx) => (
-                      <div
-                        key={idx}
-                        onClick={() => handleToggleSubtask(idx)}
-                        className={`flex items-center gap-3 p-2.5 rounded-xl border text-xs cursor-pointer select-none transition ${
-                          sub.isCompleted
-                            ? 'bg-emerald-500/5 border-emerald-500/10 text-slate-400 line-through'
-                            : 'bg-slate-950/50 border-slate-900 text-slate-200 hover:border-slate-800'
-                        }`}
-                      >
-                        <div className={`w-4.5 h-4.5 rounded-md flex items-center justify-center border transition ${
-                          sub.isCompleted ? 'bg-emerald-500 border-emerald-500 text-slate-950' : 'border-slate-700'
-                        }`}>
-                          {sub.isCompleted && <Check className="w-3 h-3" strokeWidth={3} />}
+                      <div key={idx} className="bg-slate-950/50 border border-slate-900 rounded-xl p-3.5 space-y-3">
+                        {/* Subtask main row */}
+                        <div className="flex items-center justify-between">
+                          <div
+                            onClick={() => handleToggleSubtask(idx)}
+                            className="flex items-center gap-3 cursor-pointer select-none"
+                          >
+                            <div className={`w-4.5 h-4.5 rounded-md flex items-center justify-center border transition ${
+                              sub.isCompleted ? 'bg-emerald-500 border-emerald-500 text-slate-955' : 'border-slate-700'
+                            }`}>
+                              {sub.isCompleted && <Check className="w-3 h-3 text-slate-950" strokeWidth={3} />}
+                            </div>
+                            <span className={`text-xs font-semibold ${sub.isCompleted ? 'text-slate-500 line-through' : 'text-slate-200'}`}>
+                              {sub.title}
+                            </span>
+                          </div>
+
+                          {/* Delete subtask action */}
+                          {user?.role !== 'Viewer' && (
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const updatedSubtasks = activeTask.subtasks.filter((_, sIdx) => sIdx !== idx);
+                                handleUpdateTaskDetail({ ...activeTask, subtasks: updatedSubtasks });
+                              }}
+                              className="text-slate-600 hover:text-red-400 p-1 rounded transition"
+                              title="Delete subtask"
+                            >
+                              <Trash className="w-3.5 h-3.5" />
+                            </button>
+                          )}
                         </div>
-                        <span>{sub.title}</span>
+
+                        {/* Nested Sub-subtasks section */}
+                        <div className="pl-6 space-y-2.5 border-l border-slate-800 ml-2">
+                          {sub.subsubtasks?.map((subsub, ssIdx) => (
+                            <div
+                              key={ssIdx}
+                              className="flex items-center justify-between text-[11px]"
+                            >
+                              <div
+                                onClick={() => {
+                                  if (user?.role === 'Viewer') return;
+                                  const updatedSubsub = [...(sub.subsubtasks || [])];
+                                  updatedSubsub[ssIdx].isCompleted = !updatedSubsub[ssIdx].isCompleted;
+                                  
+                                  const updatedSub = [...activeTask.subtasks];
+                                  updatedSub[idx].subsubtasks = updatedSubsub;
+                                  
+                                  handleUpdateTaskDetail({ ...activeTask, subtasks: updatedSub });
+                                }}
+                                className="flex items-center gap-2.5 cursor-pointer select-none"
+                              >
+                                <div className={`w-3.5 h-3.5 rounded flex items-center justify-center border transition ${
+                                  subsub.isCompleted ? 'bg-indigo-500 border-indigo-500 text-slate-950' : 'border-slate-800'
+                                }`}>
+                                  {subsub.isCompleted && <Check className="w-2.5 h-2.5 text-slate-950" strokeWidth={3.5} />}
+                                </div>
+                                <span className={subsub.isCompleted ? 'text-slate-500 line-through' : 'text-slate-350'}>
+                                  {subsub.title}
+                                </span>
+                              </div>
+
+                              {/* Delete subsubtask button */}
+                              {user?.role !== 'Viewer' && (
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    const updatedSubsub = sub.subsubtasks.filter((_, ss) => ss !== ssIdx);
+                                    const updatedSub = [...activeTask.subtasks];
+                                    updatedSub[idx].subsubtasks = updatedSubsub;
+                                    handleUpdateTaskDetail({ ...activeTask, subtasks: updatedSub });
+                                  }}
+                                  className="text-slate-600 hover:text-red-400 p-0.5 transition"
+                                  title="Delete sub-subtask"
+                                >
+                                  <X className="w-3 h-3" />
+                                </button>
+                              )}
+                            </div>
+                          ))}
+
+                          {/* Add sub-subtask inline input */}
+                          {user?.role !== 'Viewer' && (
+                            <div className="flex gap-2 pt-0.5">
+                              <input
+                                type="text"
+                                placeholder="Add sub-subtask..."
+                                onKeyDown={(e) => {
+                                  if (e.key === 'Enter') {
+                                    e.preventDefault();
+                                    const titleVal = e.target.value.trim();
+                                    if (!titleVal) return;
+                                    
+                                    const updatedSubsub = [...(sub.subsubtasks || []), { title: titleVal, isCompleted: false }];
+                                    const updatedSub = [...activeTask.subtasks];
+                                    updatedSub[idx].subsubtasks = updatedSubsub;
+                                    
+                                    e.target.value = '';
+                                    handleUpdateTaskDetail({ ...activeTask, subtasks: updatedSub });
+                                  }
+                                }}
+                                className="flex-1 bg-transparent border-b border-slate-900 hover:border-slate-800 focus:border-indigo-500 focus:outline-none text-[11px] text-slate-300 placeholder-slate-650 py-0.5 px-1 transition"
+                              />
+                            </div>
+                          )}
+                        </div>
                       </div>
                     ))
                   )}

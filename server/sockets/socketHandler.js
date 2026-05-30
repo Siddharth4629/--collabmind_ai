@@ -1,6 +1,48 @@
 const Chat = require('../models/Chat');
+const Task = require('../models/Task');
+const Activity = require('../models/Activity');
 
 module.exports = (io) => {
+  // Periodically check for tasks that reached their start date
+  setInterval(async () => {
+    try {
+      const now = new Date();
+      // Find tasks in Todo status where startDate is <= now
+      const tasksToStart = await Task.find({
+        status: 'Todo',
+        startDate: { $lte: now }
+      });
+      
+      for (const task of tasksToStart) {
+        task.status = 'InProgress';
+        await task.save();
+        
+        // Log activity
+        try {
+          await Activity.create({
+            project: task.project,
+            user: null, // System-triggered
+            action: 'Task Auto-Started',
+            details: `Task "${task.title}" was automatically moved to "In Progress" as its start date was reached.`
+          });
+        } catch (actErr) {
+          console.error('Failed to log auto-start activity:', actErr.message);
+        }
+        
+        // Broadcast to the project room
+        io.to(task.project.toString()).emit('task-moved', {
+          taskId: task._id,
+          status: 'InProgress',
+          order: task.order
+        });
+        
+        console.log(`[Auto-Start] Task "${task.title}" automatically moved to InProgress`);
+      }
+    } catch (err) {
+      console.error('Auto-start interval error:', err.message);
+    }
+  }, 10000); // Check every 10 seconds
+
   io.on('connection', (socket) => {
     console.log(`Socket connected: ${socket.id}`);
 
@@ -88,6 +130,12 @@ module.exports = (io) => {
       socket.to(projectId).emit('whiteboard-update', { elements });
     });
 
+    socket.on('whiteboard-draw-stroke', (data) => {
+      const { projectId, userId, element } = data;
+      // Broadcast current active stroke to all other users in project in real-time
+      socket.to(projectId).emit('whiteboard-stroke-update', { userId, element });
+    });
+
     socket.on('whiteboard-clear', ({ projectId }) => {
       socket.to(projectId).emit('whiteboard-cleared');
     });
@@ -104,6 +152,16 @@ module.exports = (io) => {
       const { projectId, noteId, content, title, editorName } = data;
       // Broadcast typing updates for notes
       socket.to(projectId).emit('note-updated', { noteId, content, title, editorName });
+    });
+
+    socket.on('note-create', (data) => {
+      const { projectId, note } = data;
+      socket.to(projectId).emit('note-created', { note });
+    });
+
+    socket.on('note-delete', (data) => {
+      const { projectId, noteId } = data;
+      socket.to(projectId).emit('note-deleted', { noteId });
     });
 
     // Collaborative Code workspace edits

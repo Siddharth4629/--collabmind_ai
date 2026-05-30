@@ -70,6 +70,14 @@ function matchesQuery(item, query) {
         }
       } else if ('$ne' in val) {
         if (item[key] === val.$ne) return false;
+      } else if ('$lte' in val) {
+        if (!item[key] || new Date(item[key]) > new Date(val.$lte)) return false;
+      } else if ('$lt' in val) {
+        if (!item[key] || new Date(item[key]) >= new Date(val.$lt)) return false;
+      } else if ('$gte' in val) {
+        if (!item[key] || new Date(item[key]) < new Date(val.$gte)) return false;
+      } else if ('$gt' in val) {
+        if (!item[key] || new Date(item[key]) <= new Date(val.$gt)) return false;
       }
     } else if (Array.isArray(val)) {
       // Check array matching

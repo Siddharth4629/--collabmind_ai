@@ -3,6 +3,7 @@ import Editor from '@monaco-editor/react';
 import axios from 'axios';
 import { useAuth } from '../../context/AuthContext';
 import { useSocket } from '../../context/SocketContext';
+import { useTheme } from '../../context/ThemeContext';
 import { 
   FileCode, Play, Terminal, Eye, FilePlus, Trash2, Loader2,
   RefreshCw, Check, AlertCircle, Users, Code, ChevronRight
@@ -11,7 +12,7 @@ import {
 export default function CodeWorkspace({ projectId }) {
   const { user } = useAuth();
   const { socket } = useSocket();
-
+  const { theme } = useTheme();
   const [files, setFiles] = useState([]);
   const [activeFile, setActiveFile] = useState(null);
   const [loadingFiles, setLoadingFiles] = useState(true);
@@ -314,7 +315,7 @@ export default function CodeWorkspace({ projectId }) {
         )}
 
         {/* Explorer File list */}
-        <div className="flex-1 p-3 overflow-y-auto space-y-1.5 scrollbar-none">
+        <div className="flex-1 p-3 overflow-auto space-y-1.5">
           {loadingFiles ? (
             <div className="flex justify-center items-center py-10">
               <Loader2 className="w-5 h-5 text-emerald-500 animate-spin" />
@@ -336,23 +337,23 @@ export default function CodeWorkspace({ projectId }) {
               return (
                 <div 
                   key={file._id}
-                  className={`flex items-center justify-between p-2.5 rounded-xl border text-xs cursor-pointer group transition-all duration-150 ${
+                  className={`flex items-center justify-between p-2.5 rounded-xl border text-xs cursor-pointer group transition-all duration-150 min-w-full w-max gap-4 ${
                     isActive 
                       ? 'bg-emerald-500/5 border-emerald-500/30 text-emerald-400 font-semibold' 
                       : 'bg-slate-950/20 border-transparent text-slate-400 hover:bg-slate-900/40 hover:text-slate-200'
                   }`}
                   onClick={() => selectFile(file)}
                 >
-                  <div className="flex items-center gap-2.5 truncate">
-                    <span className={`px-1.5 py-0.5 rounded text-[8px] uppercase tracking-wide font-bold ${extBg}`}>
+                  <div className="flex items-center gap-2.5 whitespace-nowrap">
+                    <span className={`px-1.5 py-0.5 rounded text-[8px] uppercase tracking-wide font-bold ${extBg} shrink-0`}>
                       {file.filename.split('.').pop()}
                     </span>
-                    <span className="truncate">{file.filename}</span>
+                    <span>{file.filename}</span>
                   </div>
 
                   <button 
                     onClick={(e) => { e.stopPropagation(); handleDeleteFile(file._id, file.filename); }}
-                    className="p-1 rounded text-slate-500 hover:text-rose-400 hover:bg-rose-500/10 opacity-0 group-hover:opacity-100 transition-all"
+                    className="p-1 rounded text-slate-500 hover:text-rose-400 hover:bg-rose-500/10 opacity-0 group-hover:opacity-100 transition-all shrink-0"
                   >
                     <Trash2 className="w-3.5 h-3.5" />
                   </button>
@@ -433,7 +434,7 @@ export default function CodeWorkspace({ projectId }) {
                   language={activeFile.language}
                   value={codeContent}
                   onChange={handleEditorChange}
-                  theme="vs-dark"
+                  theme={theme === 'light' ? 'light' : 'vs-dark'}
                   options={{
                     fontSize: 13,
                     minimap: { enabled: false },
@@ -495,7 +496,8 @@ export default function CodeWorkspace({ projectId }) {
                 <textarea 
                   value={terminalOutput}
                   readOnly
-                  className="w-full h-full bg-transparent text-slate-350 resize-none font-mono focus:outline-none leading-relaxed border-none whitespace-pre-wrap select-text scrollbar-none"
+                  wrap="off"
+                  className="w-full h-full bg-transparent text-slate-350 resize-none font-mono focus:outline-none leading-relaxed border-none whitespace-pre overflow-auto select-text"
                 />
               )}
 
