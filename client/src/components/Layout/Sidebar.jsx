@@ -124,7 +124,7 @@ export default function Sidebar() {
   };
 
   return (
-    <aside className={`${isCollapsed ? 'w-20' : 'w-64'} bg-slate-950 border-r border-slate-800 flex flex-col h-screen fixed left-0 top-0 z-20 font-sans transition-all duration-300`}>
+    <aside className={`${isCollapsed ? 'w-20 overflow-visible' : 'w-64'} bg-slate-950 border-r border-slate-800 flex flex-col h-screen fixed left-0 top-0 z-20 font-sans transition-all duration-300`}>
       {/* Brand Header */}
       <div className={`h-16 border-b border-slate-900 flex items-center justify-between ${isCollapsed ? 'px-4 justify-center' : 'px-6'}`}>
         <div className="flex items-center gap-3 min-w-0">
@@ -140,7 +140,7 @@ export default function Sidebar() {
             </svg>
           </div>
           {!isCollapsed && (
-            <span className="font-bold text-white tracking-tight text-[15px] font-sans truncate">
+            <span className="font-bold text-slate-100 tracking-tight text-[15px] font-sans truncate">
               CollabMind
             </span>
           )}
@@ -157,22 +157,31 @@ export default function Sidebar() {
       </div>
 
       {/* Main Navigation */}
-      <div className={`flex-1 py-6 overflow-y-auto space-y-6 ${isCollapsed ? 'px-2' : 'px-4'}`}>
+      <div className={`flex-1 py-6 space-y-6 ${isCollapsed ? 'px-2 overflow-visible' : 'px-4 overflow-y-auto'}`}>
         <div>
           {!isCollapsed && (
             <span className="px-3 text-[10px] font-bold text-slate-500 uppercase tracking-widest block mb-3">WORKSPACE</span>
           )}
           <Link
-            to="/"
-            className={`flex items-center rounded-xl text-sm font-medium transition ${isCollapsed ? 'justify-center py-3' : 'gap-3 px-3 py-2.5'} ${
-              location.pathname === '/'
+            to="/dashboard"
+            className={`group relative flex items-center rounded-xl text-sm font-medium transition ${
+              isCollapsed ? 'justify-center py-3 px-3 gap-0' : 'justify-start px-3 py-2.5 gap-3'
+            } ${
+              location.pathname === '/dashboard'
                 ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/15'
                 : 'text-slate-400 hover:bg-slate-900 hover:text-slate-100 border border-transparent'
             }`}
-            title={isCollapsed ? "Overview Dashboard" : undefined}
           >
             <LayoutGrid className="w-4 h-4 shrink-0" />
-            {!isCollapsed && <span>Overview Dashboard</span>}
+            {isCollapsed ? (
+              <span className="absolute left-16 ml-2 px-2.5 py-1.5 bg-slate-900 border border-slate-800 text-emerald-400 text-xs font-semibold rounded-xl opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 transition-all duration-200 whitespace-nowrap shadow-xl pointer-events-none z-50">
+                Overview Dashboard
+              </span>
+            ) : (
+              <span className="text-xs font-semibold truncate">
+                Overview Dashboard
+              </span>
+            )}
           </Link>
         </div>
 
@@ -191,15 +200,24 @@ export default function Sidebar() {
                   <Link
                     key={proj._id}
                     to={`/project/${proj._id}`}
-                    className={`flex items-center rounded-xl text-sm font-medium transition border ${isCollapsed ? 'justify-center py-3 border-transparent' : 'gap-3 px-3 py-2.5'} ${
+                    className={`group relative flex items-center rounded-xl text-sm font-medium transition border ${
+                      isCollapsed ? 'justify-center py-3 px-3 gap-0 border-transparent' : 'justify-start px-3 py-2.5 gap-3 border-transparent'
+                    } ${
                       isActive
                         ? 'bg-sky-500/10 text-sky-400 border-sky-500/20'
-                        : 'text-slate-400 hover:bg-slate-900 hover:text-slate-100 border-transparent'
+                        : 'text-slate-400 hover:bg-slate-900 hover:text-slate-100'
                     }`}
-                    title={isCollapsed ? proj.name : undefined}
                   >
                     <FolderKanban className="w-4 h-4 shrink-0" />
-                    {!isCollapsed && <span className="truncate">{proj.name}</span>}
+                    {isCollapsed ? (
+                      <span className="absolute left-16 ml-2 px-2.5 py-1.5 bg-slate-900 border border-slate-800 text-sky-400 text-xs font-semibold rounded-xl opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 transition-all duration-200 whitespace-nowrap shadow-xl pointer-events-none z-50">
+                        {proj.name}
+                      </span>
+                    ) : (
+                      <span className="text-xs font-semibold truncate">
+                        {proj.name}
+                      </span>
+                    )}
                   </Link>
                 );
               })

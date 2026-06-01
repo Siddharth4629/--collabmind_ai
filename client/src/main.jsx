@@ -6,6 +6,7 @@ import { API_URL } from './config/api'
 import { AuthProvider } from './context/AuthContext'
 import { SocketProvider } from './context/SocketContext'
 import { ThemeProvider } from './context/ThemeContext'
+import { ConfirmationProvider } from './context/ConfirmationContext'
 import './index.css'
 import App from './App.jsx'
 
@@ -20,7 +21,9 @@ createRoot(document.getElementById('root')).render(
       <AuthProvider>
         <SocketProvider>
           <ThemeProvider>
-            <App />
+            <ConfirmationProvider>
+              <App />
+            </ConfirmationProvider>
           </ThemeProvider>
         </SocketProvider>
       </AuthProvider>

@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useAuth } from '../../context/AuthContext';
 import { useSocket } from '../../context/SocketContext';
 import { useTheme } from '../../context/ThemeContext';
+import { useConfirmation } from '../../context/ConfirmationContext';
 import { 
   FileText, Plus, Save, Trash2, History, X, Sparkles, Check, FileCode, RotateCcw, Download
 } from 'lucide-react';
@@ -11,6 +12,7 @@ export default function Editor({ projectId }) {
   const { user } = useAuth();
   const { socket } = useSocket();
   const { theme } = useTheme();
+  const { confirm } = useConfirmation();
   const [notes, setNotes] = useState([]);
   const [selectedNote, setSelectedNote] = useState(null);
   const [noteTitle, setNoteTitle] = useState('');
@@ -226,7 +228,7 @@ export default function Editor({ projectId }) {
   };
 
   const handleDeleteNote = async () => {
-    if (!selectedNote || !window.confirm(`Are you sure you want to delete "${noteTitle}"?`)) return;
+    if (!selectedNote || !(await confirm(`Are you sure you want to delete "${noteTitle}"?`))) return;
 
     try {
       const res = await axios.delete(`/api/notes/${selectedNote._id}`);
@@ -530,9 +532,9 @@ export default function Editor({ projectId }) {
                           </div>
                           
                           <button
-                            onClick={(e) => {
+                            onClick={async (e) => {
                               e.stopPropagation();
-                              if (window.confirm("Restore this historical revision? Current draft will be saved to history.")) {
+                              if (await confirm("Restore this historical revision? Current draft will be saved to history.")) {
                                 handleRestoreVersion(version.content);
                               }
                             }}
@@ -588,8 +590,8 @@ export default function Editor({ projectId }) {
             </div>
             <div className="flex items-center gap-2">
               <button
-                onClick={() => {
-                  if (window.confirm("Restore this version?")) {
+                onClick={async () => {
+                  if (await confirm("Restore this version?")) {
                     handleRestoreVersion(compareVersion.content);
                   }
                 }}

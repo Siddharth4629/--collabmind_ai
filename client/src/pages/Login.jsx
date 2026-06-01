@@ -16,7 +16,7 @@ export default function Login() {
     const success = await login(email, password);
     setLoading(false);
     if (success) {
-      navigate('/');
+      navigate('/dashboard');
     }
   };
 
@@ -28,7 +28,7 @@ export default function Login() {
     const success = await login(demoEmail, 'demo123');
     setLoading(false);
     if (success) {
-      navigate('/');
+      navigate('/dashboard');
     }
   };
 

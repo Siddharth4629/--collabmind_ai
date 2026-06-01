@@ -1,6 +1,7 @@
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { useAuth } from './context/AuthContext';
+import Landing from './pages/Landing';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import ProjectsList from './pages/ProjectsList';
@@ -30,10 +31,11 @@ const ProtectedRoute = ({ children }) => {
 function App() {
   return (
     <Routes>
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
+      <Route path="/" element={<Landing />} />
+      <Route path="/login" element={<Landing initialAuthMode="login" />} />
+      <Route path="/register" element={<Landing initialAuthMode="register" />} />
       <Route
-        path="/"
+        path="/dashboard"
         element={
           <ProtectedRoute>
             <ProjectsList />
