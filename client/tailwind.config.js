@@ -11,8 +11,8 @@ export default {
           dark: '#0f172a',    // deep slate
           darker: '#020617',  // deeper slate
           panel: '#1e293b',   // card background
-          accent: '#10b981',  // emerald accent
-          highlight: '#0ea5e9' // sky blue accent
+          accent: '#dfc384',  // gold accent
+          highlight: '#c5a880' // bronze accent
         }
       },
       animation: {

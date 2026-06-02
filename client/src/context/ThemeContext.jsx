@@ -6,7 +6,7 @@ export const useTheme = () => useContext(ThemeContext);
 
 export const ThemeProvider = ({ children }) => {
   const [theme, setTheme] = useState(() => {
-    return localStorage.getItem('app-theme') || 'dark';
+    return sessionStorage.getItem('app-theme') || 'dark';
   });
 
   useEffect(() => {
@@ -17,7 +17,7 @@ export const ThemeProvider = ({ children }) => {
     html.classList.add(`theme-${theme}`);
     
     // Save selection
-    localStorage.setItem('app-theme', theme);
+    sessionStorage.setItem('app-theme', theme);
   }, [theme]);
 
   const value = {

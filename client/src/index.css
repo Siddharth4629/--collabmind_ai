@@ -5,40 +5,54 @@
 /* Premium styling overrides & themes */
 :root {
   /* Default: Dark Minimalist Theme */
-  --bg-950: #0a0a0a;   /* Deep charcoal space */
-  --bg-900: #141414;   /* Surface elements */
-  --bg-800: #1a1a1a;   /* Inputs & borders */
-  --bg-850: #222222;   /* Hover panels */
-  --border-800: #1f1f1f; /* Thin grid lines */
-  --border-850: #2e2e2e; /* Structured dividers */
-  --text-100: #ededed;   /* Crisp gray-white */
-  --text-200: #a3a3a3;   /* Secondary slate gray */
-  --text-300: #737373;   /* Third-level descriptions */
-  --text-450: #525252;   /* Muted captions */
+  --bg-950: #08080a;   /* Deep charcoal space */
+  --bg-900: #101014;   /* Surface elements */
+  --bg-800: #16161c;   /* Inputs & borders */
+  --bg-850: #20202a;   /* Hover panels */
+  --border-800: #1c1c24; /* Thin grid lines */
+  --border-850: #2c2c38; /* Structured dividers */
+  --text-100: #fafafc;   /* Crisp gray-white */
+  --text-200: #a0a0b0;   /* Secondary slate gray */
+  --text-300: #707080;   /* Third-level descriptions */
+  --text-450: #4e4e5e;   /* Muted captions */
   
-  --bg-950-rgb: 10, 10, 10;
-  --bg-900-rgb: 20, 20, 20;
-  --bg-800-rgb: 26, 26, 26;
-  --bg-850-rgb: 34, 34, 34;
+  --bg-950-rgb: 8, 8, 10;
+  --bg-900-rgb: 16, 16, 20;
+  --bg-800-rgb: 22, 22, 28;
+  --bg-850-rgb: 32, 32, 42;
+
+  /* Custom Nordic Bronze/Gold theme accents */
+  --gold-primary: #dfc384;
+  --gold-secondary: #c5a880;
+  --gold-dark: #8b6d43;
+  --gold-glow: rgba(223, 195, 132, 0.15);
+  --active-tab-text: #020617;
 }
 
 .theme-light {
   /* Professional Minimalist Light Theme */
   --bg-950: #faf9f6;   /* Alabaster paper background */
   --bg-900: #ffffff;   /* Pure white cards */
-  --bg-800: #f5f5f4;   /* Structured warm-gray inputs */
-  --bg-850: #e7e5e4;   /* Hover highlights */
-  --border-800: #e5e5e5; /* Crisp thin grid borders */
-  --border-850: #d6d3d1; /* Structured boundaries */
-  --text-100: #171717;   /* Obsidian body text */
-  --text-200: #525252;   /* Secondary gray text */
-  --text-300: #737373;   /* Muted details */
-  --text-450: #a3a3a3;   /* Faint captions */
+  --bg-800: #f4f3ef;   /* Structured warm-gray inputs */
+  --bg-850: #eadecc;   /* Hover highlights / warm sand */
+  --border-800: #e8e6e0; /* Crisp thin grid borders */
+  --border-850: #d6d1c4; /* Structured boundaries */
+  --text-100: #171510;   /* Obsidian body text */
+  --text-200: #3d3930;   /* Secondary gray text - darker for legibility */
+  --text-300: #5c564a;   /* Muted details - darker for legibility */
+  --text-450: #857d6f;   /* Faint captions - darker for legibility */
 
   --bg-950-rgb: 250, 249, 246;
   --bg-900-rgb: 255, 255, 255;
-  --bg-800-rgb: 245, 245, 244;
-  --bg-850-rgb: 231, 229, 228;
+  --bg-800-rgb: 244, 243, 239;
+  --bg-850-rgb: 234, 222, 204;
+
+  /* Light mode gold/bronze theme accents */
+  --gold-primary: #8b6d43;
+  --gold-secondary: #a37c4c;
+  --gold-dark: #584122;
+  --gold-glow: rgba(139, 109, 67, 0.12);
+  --active-tab-text: #ffffff;
 }
 
 /* Premium Easing Micro-Animations */
@@ -90,13 +104,12 @@
 html, body {
   background-color: var(--bg-950) !important;
   color: var(--text-100) !important;
+  scroll-behavior: smooth;
 }
 
 body {
   margin: 0;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: 'Outfit', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: auto;
@@ -118,7 +131,7 @@ body {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #10b981;
+  background: var(--gold-primary) !important;
 }
 
 /* Class Overrides for Tailwind Backgrounds */
@@ -170,6 +183,9 @@ body {
 }
 .bg-slate-950\/70 {
   background-color: rgba(var(--bg-950-rgb), 0.7) !important;
+}
+.bg-slate-950\/80 {
+  background-color: rgba(var(--bg-950-rgb), 0.8) !important;
 }
 .bg-slate-800\/40 {
   background-color: rgba(var(--bg-800-rgb), 0.4) !important;
@@ -232,23 +248,16 @@ body {
   color: var(--text-100) !important;
 }
 
-.theme-light .text-emerald-400 {
-  color: #059669 !important; /* emerald-600 */
+.theme-light .text-emerald-400,
+.theme-light .text-sky-400,
+.theme-light .text-indigo-400,
+.theme-light .text-brand-accent {
+  color: var(--gold-primary) !important;
 }
-.theme-light .text-emerald-200 {
-  color: #047857 !important; /* emerald-700 */
-}
-.theme-light .text-sky-400 {
-  color: #0284c7 !important; /* sky-600 */
-}
-.theme-light .text-sky-200 {
-  color: #0369a1 !important; /* sky-700 */
-}
-.theme-light .text-indigo-400 {
-  color: #4f46e5 !important; /* indigo-600 */
-}
+.theme-light .text-emerald-200,
+.theme-light .text-sky-200,
 .theme-light .text-indigo-200 {
-  color: #4338ca !important; /* indigo-700 */
+  color: var(--gold-secondary) !important;
 }
 .theme-light .text-amber-400 {
   color: #d97706 !important; /* amber-600 */
@@ -307,6 +316,15 @@ textarea:focus, input[type="text"]:focus, input[type="email"]:focus, select:focu
   box-shadow: 0 0 15px rgba(14, 165, 233, 0.15);
 }
 
+.glow-gold {
+  box-shadow: 0 0 20px var(--gold-glow);
+}
+
+.glow-gold-hover:hover {
+  box-shadow: 0 0 25px rgba(223, 195, 132, 0.35);
+  border-color: var(--gold-primary) !important;
+}
+
 /* Custom drawing cursor */
 .cursor-draw {
   cursor: crosshair;
@@ -316,3 +334,273 @@ textarea:focus, input[type="text"]:focus, input[type="email"]:focus, select:focu
 *:focus {
   outline: none;
 }
+
+/* Continuously Animated SVG path (marching ants effect) */
+@keyframes marchingAnts {
+  0% {
+    stroke-dashoffset: 24;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+.animate-marching {
+  stroke-dasharray: 6, 6;
+  animation: marchingAnts 1.5s linear infinite;
+}
+
+/* Pulsing SVG Nodes */
+@keyframes pulseGoldNode {
+  0%, 100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 2px var(--gold-primary));
+  }
+  50% {
+    transform: scale(1.2);
+    filter: drop-shadow(0 0 8px var(--gold-primary));
+  }
+}
+
+.animate-pulse-gold {
+  transform-origin: center;
+  animation: pulseGoldNode 3s infinite ease-in-out;
+}
+
+/* Continuous slow rotation */
+@keyframes spinSlow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-slow {
+  transform-origin: center;
+  animation: spinSlow 40s linear infinite;
+}
+
+/* Continuous floating */
+@keyframes floatSlow {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-float-slow {
+  animation: floatSlow 6s ease-in-out infinite;
+}
+
+/* Animated hover transition classes */
+.card-hover-gold {
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card-hover-gold:hover {
+  transform: translateY(-6px);
+  border-color: rgba(223, 195, 132, 0.3) !important;
+  background: rgba(var(--bg-850-rgb), 0.65) !important;
+  box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.5), 0 0 15px var(--gold-glow);
+}
+
+.theme-light .card-hover-gold:hover {
+  box-shadow: 0 12px 30px -10px rgba(139, 109, 67, 0.15), 0 0 15px var(--gold-glow);
+  background: rgba(255, 255, 255, 1) !important;
+}
+
+/* Animated Button Gradient hover */
+.btn-gold-grad {
+  background: linear-gradient(135deg, var(--gold-primary) 0%, var(--gold-secondary) 100%);
+  color: var(--bg-950) !important;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.btn-gold-grad::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, var(--gold-secondary) 0%, var(--gold-primary) 100%);
+  transition: opacity 0.3s ease;
+  opacity: 0;
+  z-index: -1;
+}
+
+.btn-gold-grad:hover::before {
+  opacity: 1;
+}
+
+.btn-gold-grad:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(223, 195, 132, 0.3);
+}
+
+.btn-gold-grad:active {
+  transform: translateY(0);
+}
+
+/* Translucent responsive navbar background */
+.navbar-custom {
+  background-color: rgba(var(--bg-950-rgb), 0.8) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border-800) !important;
+}
+
+/* GLOBAL TAILWIND COLOR ACCENT OVERRIDES (Nordic Gold-Bronze Theme) */
+
+/* 1. Background colors overrides */
+.bg-indigo-600,
+.bg-indigo-650,
+.bg-emerald-500,
+.bg-emerald-600,
+.bg-indigo-500,
+.bg-emerald-400,
+.bg-brand-accent {
+  background: var(--gold-primary) !important;
+  background-color: var(--gold-primary) !important;
+  color: var(--bg-950) !important;
+}
+
+.hover\:bg-indigo-500:hover,
+.hover\:bg-indigo-600:hover,
+.hover\:bg-emerald-400:hover,
+.hover\:bg-emerald-500:hover,
+.group:hover .group-hover\:bg-emerald-500 {
+  background: var(--gold-secondary) !important;
+  background-color: var(--gold-secondary) !important;
+  color: var(--bg-950) !important;
+}
+
+.bg-indigo-500\/10,
+.bg-emerald-500\/10,
+.bg-indigo-500\/5,
+.bg-emerald-500\/5 {
+  background-color: var(--gold-glow) !important;
+}
+
+/* 2. Text colors overrides */
+.text-indigo-400,
+.text-indigo-200,
+.text-indigo-300,
+.text-emerald-400,
+.text-emerald-200,
+.text-sky-400,
+.text-brand-accent,
+.text-brand-highlight {
+  color: var(--gold-primary) !important;
+}
+
+.hover\:text-indigo-300:hover,
+.hover\:text-emerald-300:hover,
+.hover\:text-\[var\(--gold-primary\)\]:hover {
+  color: var(--gold-secondary) !important;
+}
+
+/* 3. Border colors overrides */
+.border-indigo-500,
+.border-indigo-500\/20,
+.border-indigo-500\/15,
+.border-indigo-650,
+.border-emerald-500,
+.border-emerald-500\/20,
+.border-emerald-500\/15,
+.border-brand-accent {
+  border-color: rgba(223, 195, 132, 0.22) !important;
+}
+
+.hover\:border-indigo-500:hover,
+.hover\:border-emerald-500:hover {
+  border-color: var(--gold-primary) !important;
+}
+
+/* 4. Glow overlays overrides */
+.glow-emerald,
+.glow-blue {
+  box-shadow: 0 0 15px var(--gold-glow) !important;
+}
+
+.theme-light .bg-indigo-600,
+.theme-light .bg-indigo-650,
+.theme-light .bg-emerald-500,
+.theme-light .bg-emerald-600,
+.theme-light .bg-indigo-500,
+.theme-light .bg-emerald-400,
+.theme-light .bg-brand-accent {
+  background: var(--gold-primary) !important;
+  background-color: var(--gold-primary) !important;
+  color: var(--bg-900) !important; /* contrast on light mode */
+}
+
+/* Custom utility class additions and readability fixes in light mode */
+.text-slate-105 {
+  color: var(--text-100) !important;
+}
+.text-slate-350 {
+  color: var(--text-200) !important;
+}
+.text-slate-450 {
+  color: var(--text-300) !important;
+}
+.text-slate-650 {
+  color: var(--text-450) !important;
+}
+
+.theme-light .hover\:text-white:hover {
+  color: var(--text-100) !important;
+}
+
+/* Hover background overrides for dynamic themes */
+.hover\:bg-slate-950:hover {
+  background-color: var(--bg-950) !important;
+}
+.hover\:bg-slate-900:hover {
+  background-color: var(--bg-900) !important;
+}
+.hover\:bg-slate-850:hover {
+  background-color: var(--bg-850) !important;
+}
+.hover\:bg-slate-800:hover {
+  background-color: var(--bg-800) !important;
+}
+
+/* Custom whiteboard cursor animations */
+@keyframes cursorPulsePen {
+  0%, 100% {
+    box-shadow: 0 0 6px var(--gold-glow);
+    border-color: var(--gold-primary);
+  }
+  50% {
+    box-shadow: 0 0 14px rgba(223, 195, 132, 0.45);
+    border-color: var(--gold-secondary);
+  }
+}
+.animate-cursor-pen {
+  animation: cursorPulsePen 1.8s infinite ease-in-out;
+}
+
+@keyframes cursorPulseEraser {
+  0%, 100% {
+    box-shadow: 0 0 6px rgba(239, 68, 68, 0.2);
+    border-color: rgba(239, 68, 68, 0.7);
+  }
+  50% {
+    box-shadow: 0 0 16px rgba(239, 68, 68, 0.5);
+    border-color: rgba(239, 68, 68, 1);
+  }
+}
+.animate-cursor-eraser {
+  animation: cursorPulseEraser 1.2s infinite ease-in-out;
+}
+

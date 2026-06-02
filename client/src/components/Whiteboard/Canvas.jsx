@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import axios from 'axios';
 import { useSocket } from '../../context/SocketContext';
 import { useAuth } from '../../context/AuthContext';
+import { useConfirmation } from '../../context/ConfirmationContext';
 import { Paintbrush, Eraser, Square, Circle, Minus, Trash2, Palette, ShieldAlert } from 'lucide-react';
 
 const COLORS = [
@@ -15,6 +16,7 @@ const COLORS = [
 export default function Canvas({ projectId }) {
   const { user } = useAuth();
   const { socket } = useSocket();
+  const { confirm } = useConfirmation();
   const canvasRef = useRef(null);
   const cursorRef = useRef(null);
   
@@ -38,7 +40,7 @@ export default function Canvas({ projectId }) {
     elementsRef.current = elements;
   }, [elements]);
 
-  const drawColor = tool === 'eraser' ? '#020617' : color;
+  const drawColor = tool === 'eraser' ? 'eraser' : color;
 
   // 1. Fetch saved whiteboard drawings from database
   useEffect(() => {
@@ -113,12 +115,13 @@ export default function Canvas({ projectId }) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     const drawElement = (el) => {
-      const isEraser = el.color === '#020617';
+      const isEraser = el.color === 'eraser' || el.color === '#020617';
       const isDefault = el.color === '#f8fafc' || el.color === 'DEFAULT';
       
       let resolvedColor = el.color;
       if (isEraser) {
-        resolvedColor = document.documentElement.classList.contains('theme-light') ? '#ffffff' : '#141414';
+        ctx.globalCompositeOperation = 'destination-out';
+        resolvedColor = 'rgba(0,0,0,1)';
       } else if (isDefault) {
         resolvedColor = document.documentElement.classList.contains('theme-light') ? '#171717' : '#ededed';
       }
@@ -211,12 +214,17 @@ export default function Canvas({ projectId }) {
     // Render interactive preview of actively drawn element
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
-    const resolvedDrawColor = drawColor === '#020617' 
-      ? (document.documentElement.classList.contains('theme-light') ? '#ffffff' : '#141414')
-      : (drawColor === 'DEFAULT' 
+    const isEraser = drawColor === 'eraser' || drawColor === '#020617';
+    if (isEraser) {
+      ctx.globalCompositeOperation = 'destination-out';
+      ctx.strokeStyle = 'rgba(0,0,0,1)';
+    } else {
+      ctx.globalCompositeOperation = 'source-over';
+      const resolvedDrawColor = drawColor === 'DEFAULT' 
         ? (document.documentElement.classList.contains('theme-light') ? '#171717' : '#ededed') 
-        : drawColor);
-    ctx.strokeStyle = resolvedDrawColor;
+        : drawColor;
+      ctx.strokeStyle = resolvedDrawColor;
+    }
     ctx.lineWidth = lineWidth;
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
@@ -283,6 +291,9 @@ export default function Canvas({ projectId }) {
         lineWidth
       };
     }
+
+    // Reset composite operation to normal drawing
+    ctx.globalCompositeOperation = 'source-over';
 
     // Broadcast current stroke to other users (throttled to ~33fps)
     if (socket && activeElement) {
@@ -374,7 +385,7 @@ export default function Canvas({ projectId }) {
 
   const handleClear = async () => {
     if (user?.role === 'Viewer') return;
-    if (!window.confirm('Are you sure you want to clear the whiteboard?')) return;
+    if (!(await confirm('Are you sure you want to clear the whiteboard?'))) return;
 
     setElements([]);
     clearCanvasOnly();
@@ -404,14 +415,19 @@ export default function Canvas({ projectId }) {
 
   return (
     <div className="flex flex-col h-[calc(100vh-250px)] animate-fade-in gap-4">
-      {/* Drawing Controls toolbar */}
-      <div className="flex flex-wrap items-center justify-between gap-4 p-3 bg-slate-900 border border-slate-800 rounded-xl">
-        <div className="flex items-center gap-4">
+      
+      {/* 1. Structured Controls toolbar (Fixed Top Panel) */}
+      <div className="flex flex-wrap items-center justify-between gap-4 p-3 bg-slate-900 border border-slate-800 rounded-2xl shadow-lg select-none">
+        <div className="flex items-center gap-3.5">
           {/* Tool selector */}
-          <div className="flex items-center bg-slate-950 p-1 rounded-lg border border-slate-800 gap-0.5">
+          <div className="flex items-center bg-slate-950 p-1 rounded-xl border border-slate-850 gap-1">
             <button
               onClick={() => setTool('line-draw')}
-              className={`p-1.5 rounded-md transition ${tool === 'line-draw' ? 'bg-indigo-650 text-white font-bold' : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900/60'}`}
+              className={`p-1.5 rounded-lg transition-all hover:scale-105 active:scale-95 cursor-pointer ${
+                tool === 'line-draw'
+                  ? 'bg-gradient-to-r from-[var(--gold-primary)] to-[var(--gold-secondary)] text-[var(--active-tab-text)] font-extrabold shadow-md'
+                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
+              }`}
               title="Pen Brush"
             >
               <Paintbrush className="w-3.5 h-3.5" />
@@ -421,28 +437,44 @@ export default function Canvas({ projectId }) {
                 setTool('eraser');
                 setLineWidth(16); // Default to a thicker brush for erasing
               }}
-              className={`p-1.5 rounded-md transition ${tool === 'eraser' ? 'bg-indigo-650 text-white font-bold' : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900/60'}`}
+              className={`p-1.5 rounded-lg transition-all hover:scale-105 active:scale-95 cursor-pointer ${
+                tool === 'eraser'
+                  ? 'bg-gradient-to-r from-[var(--gold-primary)] to-[var(--gold-secondary)] text-[var(--active-tab-text)] font-extrabold shadow-md'
+                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
+              }`}
               title="Eraser"
             >
               <Eraser className="w-3.5 h-3.5" />
             </button>
             <button
               onClick={() => setTool('rectangle')}
-              className={`p-1.5 rounded-md transition ${tool === 'rectangle' ? 'bg-indigo-650 text-white font-bold' : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900/60'}`}
+              className={`p-1.5 rounded-lg transition-all hover:scale-105 active:scale-95 cursor-pointer ${
+                tool === 'rectangle'
+                  ? 'bg-gradient-to-r from-[var(--gold-primary)] to-[var(--gold-secondary)] text-[var(--active-tab-text)] font-extrabold shadow-md'
+                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
+              }`}
               title="Draw Rectangle"
             >
               <Square className="w-3.5 h-3.5" />
             </button>
             <button
               onClick={() => setTool('circle')}
-              className={`p-1.5 rounded-md transition ${tool === 'circle' ? 'bg-indigo-650 text-white font-bold' : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900/60'}`}
+              className={`p-1.5 rounded-lg transition-all hover:scale-105 active:scale-95 cursor-pointer ${
+                tool === 'circle'
+                  ? 'bg-gradient-to-r from-[var(--gold-primary)] to-[var(--gold-secondary)] text-[var(--active-tab-text)] font-extrabold shadow-md'
+                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
+              }`}
               title="Draw Circle"
             >
               <Circle className="w-3.5 h-3.5" />
             </button>
             <button
               onClick={() => setTool('line')}
-              className={`p-1.5 rounded-md transition ${tool === 'line' ? 'bg-indigo-650 text-white font-bold' : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900/60'}`}
+              className={`p-1.5 rounded-lg transition-all hover:scale-105 active:scale-95 cursor-pointer ${
+                tool === 'line'
+                  ? 'bg-gradient-to-r from-[var(--gold-primary)] to-[var(--gold-secondary)] text-[var(--active-tab-text)] font-extrabold shadow-md'
+                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
+              }`}
               title="Draw Straight Line"
             >
               <Minus className="w-3.5 h-3.5" />
@@ -450,36 +482,50 @@ export default function Canvas({ projectId }) {
           </div>
 
           {/* Color Palettes */}
-          <div className="flex items-center gap-1.5 px-3 border-l border-slate-800">
-            {COLORS.map((col) => (
-              <button
-                key={col.hex}
-                onClick={() => {
-                  setColor(col.hex);
-                  if (tool === 'eraser') {
-                    setTool('line-draw');
-                    setLineWidth(4); // Reset brush size
-                  }
-                }}
-                style={{ backgroundColor: col.hex === 'DEFAULT' ? (document.documentElement.classList.contains('theme-light') ? '#171717' : '#ededed') : col.hex }}
-                className={`w-5 h-5 rounded-full border transition ${color === col.hex ? 'border-indigo-500 scale-110 shadow' : 'border-slate-950/20 hover:scale-105'}`}
-                title={col.name}
-              />
-            ))}
+          <div className="flex items-center gap-2 px-3.5 border-l border-slate-850 h-7">
+            {COLORS.map((col) => {
+              const isDefault = col.hex === 'DEFAULT';
+              const resolvedColor = isDefault 
+                ? (document.documentElement.classList.contains('theme-light') ? '#171717' : '#ededed') 
+                : col.hex;
+              const isActive = color === col.hex;
+
+              return (
+                <button
+                  key={col.hex}
+                  onClick={() => {
+                    setColor(col.hex);
+                    if (tool === 'eraser') {
+                      setTool('line-draw');
+                      setLineWidth(4); // Reset brush size
+                    }
+                  }}
+                  style={{ backgroundColor: resolvedColor }}
+                  className={`w-5 h-5 rounded-full border transition-all hover:scale-110 active:scale-90 cursor-pointer relative flex items-center justify-center ${
+                    isActive 
+                      ? 'border-white scale-110 shadow-md ring-2 ring-[var(--gold-primary)] ring-offset-2 ring-offset-slate-900' 
+                      : 'border-slate-950/20'
+                  }`}
+                  title={col.name}
+                >
+                  {isActive && <div className="w-1.5 h-1.5 rounded-full bg-slate-900" style={{ backgroundColor: resolvedColor === '#ffffff' || resolvedColor === '#ededed' ? '#000000' : '#ffffff' }} />}
+                </button>
+              );
+            })}
           </div>
 
           {/* Brush stroke slider */}
-          <div className="flex items-center gap-2 pl-3 border-l border-slate-800 text-xs">
-            <span className="text-slate-500 font-semibold uppercase tracking-wider">Size:</span>
+          <div className="flex items-center gap-2 pl-3.5 border-l border-slate-850 h-7 text-[10px]">
+            <span className="text-slate-500 font-extrabold uppercase tracking-wider">Size:</span>
             <input
               type="range"
               min="1"
               max="20"
               value={lineWidth}
               onChange={(e) => setLineWidth(Number(e.target.value))}
-              className="w-24 accent-indigo-500"
+              className="w-20 md:w-24 accent-[var(--gold-primary)] cursor-pointer h-1 bg-slate-800 rounded-lg appearance-none"
             />
-            <span className="text-slate-200 w-4 font-mono font-bold">{lineWidth}</span>
+            <span className="text-[var(--gold-primary)] w-4 font-mono font-extrabold text-center bg-slate-950 px-1 py-0.5 rounded border border-slate-800">{lineWidth}</span>
           </div>
         </div>
 
@@ -487,21 +533,29 @@ export default function Canvas({ projectId }) {
         {user?.role !== 'Viewer' ? (
           <button
             onClick={handleClear}
-            className="bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/20 text-rose-400 text-xs font-semibold py-2 px-4 rounded-xl flex items-center gap-2 transition"
+            className="bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/20 hover:border-rose-500/40 text-rose-400 text-[10px] font-bold py-1.5 px-3 rounded-xl flex items-center gap-1.5 transition-all cursor-pointer active:scale-95"
           >
-            <Trash2 className="w-4 h-4" />
+            <Trash2 className="w-3.5 h-3.5" />
             <span>Clear Canvas</span>
           </button>
         ) : (
-          <div className="flex items-center gap-1.5 text-slate-500 text-xs">
-            <ShieldAlert className="w-4 h-4" />
-            <span>View Only Canvas</span>
+          <div className="flex items-center gap-1 text-slate-500 text-[10px] font-semibold">
+            <ShieldAlert className="w-3.5 h-3.5 text-slate-500" />
+            <span>View Only</span>
           </div>
         )}
       </div>
 
-      {/* Main Canvas Workspace */}
-      <div className="flex-1 bg-slate-900 border border-slate-800 rounded-xl relative overflow-hidden group">
+      {/* 2. Main Canvas Workspace */}
+      <div 
+        className="flex-1 bg-slate-950 border-2 border-[var(--gold-primary)]/30 hover:border-[var(--gold-primary)]/60 shadow-[0_0_15px_var(--gold-glow)] rounded-2xl relative overflow-hidden group transition-all duration-300"
+        style={{
+          backgroundImage: document.documentElement.classList.contains('theme-light')
+            ? 'radial-gradient(rgba(0, 0, 0, 0.08) 1.2px, transparent 1.2px)'
+            : 'radial-gradient(rgba(255, 255, 255, 0.08) 1.2px, transparent 1.2px)',
+          backgroundSize: '24px 24px'
+        }}
+      >
         <canvas
           ref={canvasRef}
           onMouseDown={handleMouseDown}
@@ -509,14 +563,18 @@ export default function Canvas({ projectId }) {
           onMouseUp={handleMouseUp}
           onMouseLeave={handleMouseLeave}
           onMouseEnter={handleMouseEnter}
-          className={`absolute inset-0 w-full h-full ${tool === 'eraser' && user?.role !== 'Viewer' ? 'cursor-none' : 'cursor-draw'} ${user?.role === 'Viewer' ? 'pointer-events-none opacity-90' : ''}`}
+          className={`absolute inset-0 w-full h-full ${(tool === 'line-draw' || tool === 'eraser') && user?.role !== 'Viewer' ? 'cursor-none' : 'cursor-draw'} ${user?.role === 'Viewer' ? 'pointer-events-none opacity-90' : ''}`}
         />
 
-        {/* Custom Eraser Pointer Indicator */}
-        {tool === 'eraser' && user?.role !== 'Viewer' && (
+        {/* Custom size-dynamic, animated cursors for Pen and Eraser */}
+        {(tool === 'line-draw' || tool === 'eraser') && user?.role !== 'Viewer' && (
           <div 
             ref={cursorRef}
-            className="absolute rounded-full border border-rose-500/80 bg-rose-500/10 pointer-events-none transition-all duration-75 shadow-[0_0_8px_rgba(239,68,68,0.3)]"
+            className={`absolute rounded-full pointer-events-none transition-all duration-75 ${
+              tool === 'eraser'
+                ? 'bg-rose-500/10 border border-rose-500/80 animate-cursor-eraser'
+                : 'bg-[var(--gold-glow)] border border-[var(--gold-primary)] animate-cursor-pen'
+            }`}
             style={{
               width: `${lineWidth}px`,
               height: `${lineWidth}px`,
@@ -529,3 +587,4 @@ export default function Canvas({ projectId }) {
     </div>
   );
 }
+

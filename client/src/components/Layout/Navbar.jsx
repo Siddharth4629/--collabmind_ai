@@ -27,7 +27,7 @@ export default function Navbar({ title }) {
   return (
     <header className={`h-16 bg-slate-900 border-b border-slate-800 flex items-center justify-between px-8 fixed top-0 right-0 z-10 transition-all duration-300 ${sidebarCollapsed ? 'left-20' : 'left-64'}`}>
       {/* Page Title */}
-      <h2 className="text-lg font-bold text-white tracking-tight font-sans">
+      <h2 className="text-lg font-bold text-slate-100 tracking-tight font-sans">
         {title || 'Overview'}
       </h2>
 

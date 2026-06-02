@@ -63,15 +63,15 @@ export default function Ideator({ projectId, onTaskAdded }) {
   };
 
   return (
-    <div className="space-y-6 scrollbar-thin">
+    <div className="space-y-6 scrollbar-thin text-left">
       
       {/* Search/Brainstorm Card */}
       <div className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800/80 backdrop-blur-md relative overflow-hidden shadow-2xl">
         <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-500/5 rounded-full blur-3xl -z-10" />
         
         <div className="flex items-center gap-3 mb-4">
-          <div className="w-10 h-10 rounded-xl bg-indigo-500/10 flex items-center justify-center border border-indigo-500/30 shadow-[0_0_15px_rgba(99,102,241,0.15)]">
-            <Sparkles className="w-5 h-5 text-indigo-400 animate-pulse" />
+          <div className="w-10 h-10 rounded-xl bg-[var(--gold-primary)]/10 flex items-center justify-center border border-[var(--gold-primary)]/20 shadow-[0_0_15px_rgba(223,195,132,0.15)]">
+            <Sparkles className="w-5 h-5 text-[var(--gold-primary)] animate-pulse" />
           </div>
           <div>
             <h2 className="text-base font-semibold text-slate-100">AI Ideas Brainstorming</h2>
@@ -91,9 +91,9 @@ export default function Ideator({ projectId, onTaskAdded }) {
                   handleBrainstorm(preset.text);
                 }}
                 disabled={loading}
-                className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-950/40 hover:bg-slate-800/60 border border-slate-850 hover:border-slate-800 rounded-xl text-xs text-slate-350 transition-all focus:outline-none"
+                className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-950/40 hover:bg-slate-800/60 border border-slate-850 hover:border-slate-800 rounded-xl text-xs text-slate-350 transition-all focus:outline-none cursor-pointer"
               >
-                <Icon className="w-3.5 h-3.5 text-indigo-400" />
+                <Icon className="w-3.5 h-3.5 text-[var(--gold-primary)]" />
                 <span>{preset.text}</span>
               </button>
             );
@@ -107,29 +107,29 @@ export default function Ideator({ projectId, onTaskAdded }) {
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
             placeholder="Ask Gemini to generate tasks (e.g. 'Brainstorm security protocols' or 'Outline design guidelines')..."
-            className="flex-1 bg-slate-950/70 border border-slate-850 hover:border-slate-800 focus:border-indigo-500/80 text-slate-100 placeholder-slate-650 rounded-xl px-4 py-2.5 text-xs focus:outline-none transition-all focus:ring-1 focus:ring-indigo-500/30"
+            className="flex-1 bg-slate-950/70 border border-slate-855 hover:border-slate-800 focus:border-[var(--gold-primary)] text-slate-100 placeholder-slate-650 rounded-xl px-4 py-2.5 text-xs focus:outline-none transition-all focus:ring-1 focus:ring-[var(--gold-primary)]/15"
             onKeyDown={(e) => e.key === 'Enter' && handleBrainstorm()}
             disabled={loading}
           />
           <button
             onClick={() => handleBrainstorm()}
             disabled={loading || !prompt.trim()}
-            className="bg-indigo-650 hover:bg-indigo-600 disabled:bg-slate-850 text-white px-5 rounded-xl text-xs font-semibold shadow-[0_0_15px_rgba(99,102,241,0.2)] disabled:shadow-none hover:shadow-[0_0_20px_rgba(99,102,241,0.35)] transition-all flex items-center justify-center gap-1.5 shrink-0"
+            className="btn-gold-grad disabled:opacity-50 text-slate-950 px-5 rounded-xl text-xs font-bold shadow-[0_0_15px_var(--gold-glow)] disabled:shadow-none transition-all flex items-center justify-center gap-1.5 shrink-0 cursor-pointer"
           >
-            <Send className="w-3.5 h-3.5" />
+            <Send className="w-3.5 h-3.5 text-slate-950 stroke-[3px]" />
             <span>Generate</span>
           </button>
         </div>
 
-        {error && <p className="text-xs text-rose-400 mt-3">{error}</p>}
+        {error && <p className="text-xs text-rose-450 mt-3">{error}</p>}
       </div>
 
       {/* Loading Placeholder */}
       {loading && (
         <div className="p-8 rounded-2xl bg-slate-900/40 border border-slate-800/60 flex flex-col items-center justify-center text-center space-y-4">
           <div className="relative">
-            <div className="w-12 h-12 border-4 border-indigo-500/20 border-t-indigo-500 rounded-full animate-spin" />
-            <Sparkles className="w-5 h-5 text-indigo-400 absolute inset-0 m-auto animate-pulse" />
+            <div className="w-12 h-12 border-4 border-[var(--gold-primary)]/20 border-t-[var(--gold-primary)] rounded-full animate-spin" />
+            <Sparkles className="w-5 h-5 text-[var(--gold-primary)] absolute inset-0 m-auto animate-pulse" />
           </div>
           <div>
             <h4 className="text-sm font-semibold text-slate-200">Consulting AI Knowledgebase</h4>
@@ -151,7 +151,7 @@ export default function Ideator({ projectId, onTaskAdded }) {
             } else if (idea.priority === 'Medium') {
               priorityBadge = 'text-amber-400 bg-amber-500/10 border-amber-500/20';
             }
-
+ 
             return (
               <div 
                 key={index} 
@@ -167,7 +167,7 @@ export default function Ideator({ projectId, onTaskAdded }) {
                     </span>
                   </div>
 
-                  <h3 className="text-sm font-bold text-slate-100 group-hover:text-indigo-400 transition-colors leading-snug">{idea.title}</h3>
+                  <h3 className="text-sm font-bold text-slate-100 group-hover:text-[var(--gold-primary)] transition-colors leading-snug">{idea.title}</h3>
                   <p className="text-xs text-slate-400 mt-2 leading-relaxed">{idea.description}</p>
                 </div>
 
@@ -179,7 +179,7 @@ export default function Ideator({ projectId, onTaskAdded }) {
                   ) : (
                     <button
                       onClick={() => handleAddToKanban(idea, index)}
-                      className="inline-flex items-center gap-1.5 text-xs text-slate-300 font-semibold hover:text-slate-100 bg-slate-950/60 hover:bg-indigo-650 px-3 py-1.5 rounded-xl border border-slate-800 hover:border-indigo-600 transition-all"
+                      className="inline-flex items-center gap-1.5 text-xs text-slate-300 font-semibold hover:text-slate-100 bg-slate-950/60 hover:bg-gradient-to-r hover:from-[var(--gold-primary)] hover:to-[var(--gold-secondary)] hover:text-slate-950 px-3 py-1.5 rounded-xl border border-slate-800 hover:border-[var(--gold-primary)] transition-all cursor-pointer font-bold"
                     >
                       <Plus className="w-3.5 h-3.5" /> Add Task
                     </button>
@@ -194,7 +194,7 @@ export default function Ideator({ projectId, onTaskAdded }) {
       {/* Empty State */}
       {!loading && ideas.length === 0 && (
         <div className="p-10 rounded-2xl bg-slate-900/40 border border-slate-800/60 flex flex-col items-center justify-center text-center">
-          <Lightbulb className="w-12 h-12 text-slate-700 mb-3" />
+          <Lightbulb className="w-12 h-12 text-slate-800 mb-3" />
           <h3 className="text-slate-300 font-medium mb-1">Need project ideas?</h3>
           <p className="text-xs text-slate-500 max-w-sm">Enter a brainstorming query above or click a prompt shortcut to populate initial tasks.</p>
         </div>

@@ -18,7 +18,7 @@ export default function Register() {
     const success = await register(name, email, password, role);
     setLoading(false);
     if (success) {
-      navigate('/');
+      navigate('/dashboard');
     }
   };
 

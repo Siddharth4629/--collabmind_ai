@@ -4,13 +4,16 @@ import axios from 'axios';
 import { useAuth } from '../../context/AuthContext';
 import { useSocket } from '../../context/SocketContext';
 import { useTheme } from '../../context/ThemeContext';
+import { useConfirmation } from '../../context/ConfirmationContext';
 import { 
   FileCode, Play, Terminal, Eye, FilePlus, Trash2, Loader2,
-  RefreshCw, Check, AlertCircle, Users, Code, ChevronRight
+  RefreshCw, Check, AlertCircle, Users, Code, ChevronRight,
+  ChevronLeft, ChevronUp, ChevronDown, X
 } from 'lucide-react';
 
 export default function CodeWorkspace({ projectId }) {
   const { user } = useAuth();
+  const { confirm } = useConfirmation();
   const { socket } = useSocket();
   const { theme } = useTheme();
   const [files, setFiles] = useState([]);
@@ -23,6 +26,10 @@ export default function CodeWorkspace({ projectId }) {
   const [runningCode, setRunningCode] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
   const [activeTab, setActiveTab] = useState('terminal'); // 'terminal' or 'preview'
+  const [explorerCollapsed, setExplorerCollapsed] = useState(false);
+  const [terminalHeight, setTerminalHeight] = useState(200);
+  const [terminalOpen, setTerminalOpen] = useState(true);
+  const [isResizingTerminal, setIsResizingTerminal] = useState(false);
   
   // Dialog states
   const [newFilename, setNewFilename] = useState('');
@@ -33,7 +40,38 @@ export default function CodeWorkspace({ projectId }) {
   // Collaborative indicators
   const [activeCollaborators, setActiveCollaborators] = useState([]);
   const activeFileRef = useRef(null);
+  const terminalRef = useRef(null);
   
+  // Editor command refs to bypass stale states
+  const editorRef = useRef(null);
+  const runCodeRef = useRef(null);
+  const saveWorkspaceRef = useRef(null);
+
+  useEffect(() => {
+    runCodeRef.current = handleRunCode;
+    saveWorkspaceRef.current = handleSaveFile;
+  });
+
+  // Setup global keyboard listeners as a fallback
+  useEffect(() => {
+    const handleGlobalKeyDown = (e) => {
+      const isEnter = e.key === 'Enter';
+      const isS = e.key === 's' || e.key === 'S';
+      const isCtrlCmd = e.ctrlKey || e.metaKey;
+
+      if (isCtrlCmd && isEnter) {
+        e.preventDefault();
+        if (runCodeRef.current) runCodeRef.current();
+      } else if (isCtrlCmd && isS) {
+        e.preventDefault();
+        if (saveWorkspaceRef.current) saveWorkspaceRef.current();
+      }
+    };
+    
+    window.addEventListener('keydown', handleGlobalKeyDown);
+    return () => window.removeEventListener('keydown', handleGlobalKeyDown);
+  }, []);
+
   // Update ref to avoid stale socket closures
   useEffect(() => {
     activeFileRef.current = activeFile;
@@ -148,6 +186,10 @@ export default function CodeWorkspace({ projectId }) {
     setRunningCode(true);
     setTerminalOutput('Compiling and executing code in sandbox environment...');
     setActiveTab('terminal');
+    setTerminalOpen(true);
+    if (terminalHeight < 150) {
+      setTerminalHeight(220);
+    }
 
     try {
       const res = await axios.post(`/api/code/${projectId}/run`, {
@@ -195,10 +237,10 @@ export default function CodeWorkspace({ projectId }) {
   // Delete file
   const handleDeleteFile = async (fileId, filename) => {
     if (files.length <= 1) {
-      alert('Workspace requires at least 1 active code file.');
+      await confirm('Workspace requires at least 1 active code file.', true);
       return;
     }
-    if (!window.confirm(`Are you sure you want to delete "${filename}"?`)) return;
+    if (!(await confirm(`Are you sure you want to delete "${filename}"?`))) return;
 
     try {
       const res = await axios.delete(`/api/code/${projectId}/${fileId}`);
@@ -260,126 +302,172 @@ export default function CodeWorkspace({ projectId }) {
     return () => window.removeEventListener('message', handleMessage);
   }, []);
 
+  const startResizingTerminal = (e) => {
+    e.preventDefault();
+    setIsResizingTerminal(true);
+  };
+
+  useEffect(() => {
+    if (!isResizingTerminal) return;
+
+    const handleMouseMove = (e) => {
+      if (terminalRef.current) {
+        const rect = terminalRef.current.parentNode.getBoundingClientRect();
+        let newHeight = rect.bottom - e.clientY;
+        if (newHeight < 40) {
+          newHeight = 40;
+          setTerminalOpen(false);
+        } else {
+          setTerminalOpen(true);
+        }
+        if (newHeight > 450) newHeight = 450;
+        setTerminalHeight(newHeight);
+      }
+    };
+
+    const handleMouseUp = () => {
+      setIsResizingTerminal(false);
+    };
+
+    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseup', handleMouseUp);
+
+    return () => {
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+    };
+  }, [isResizingTerminal]);
+
   const selectFile = (file) => {
     setActiveFile(file);
     setCodeContent(file.content);
   };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 h-[calc(100vh-250px)] min-h-[550px] relative">
-      
+    <div className="flex flex-col lg:flex-row gap-6 h-[calc(100vh-220px)] min-h-[600px] relative text-left">
       {/* 1. File Explorer Navigation Panel (Left) */}
-      <div className="lg:col-span-1 bg-slate-900/60 border border-slate-800/80 rounded-2xl flex flex-col backdrop-blur-md overflow-hidden">
-        <div className="p-4 border-b border-slate-850 flex justify-between items-center bg-slate-950/40">
-          <div className="flex items-center gap-2">
-            <Code className="w-4 h-4 text-emerald-400" />
-            <span className="text-xs uppercase font-bold tracking-wider text-slate-350">Workspace Explorer</span>
+      {!explorerCollapsed && (
+        <div className="w-full lg:w-[260px] bg-slate-900/60 border border-slate-800/80 rounded-2xl flex flex-col backdrop-blur-md overflow-hidden shrink-0 transition-all duration-300">
+          <div className="p-4 border-b border-slate-850 flex justify-between items-center bg-slate-950/40">
+            <div className="flex items-center gap-2">
+              <Code className="w-4 h-4 text-[var(--gold-primary)]" />
+              <span className="text-xs uppercase font-bold tracking-wider text-slate-350">Workspace Explorer</span>
+            </div>
+            <button 
+              onClick={() => setShowNewFileDialog(true)}
+              className="p-1.5 rounded-lg bg-[var(--gold-glow)] text-[var(--gold-primary)] border border-[var(--gold-primary)]/20 hover:bg-[var(--gold-primary)] hover:text-slate-950 transition duration-150 cursor-pointer active:scale-95"
+              title="Create new file"
+            >
+              <FilePlus className="w-4 h-4" />
+            </button>
           </div>
-          <button 
-            onClick={() => setShowNewFileDialog(true)}
-            className="p-1.5 rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 hover:bg-emerald-500/20 transition duration-150"
-            title="Create new file"
-          >
-            <FilePlus className="w-4 h-4" />
-          </button>
-        </div>
 
-        {/* Dialog to create file */}
-        {showNewFileDialog && (
-          <form onSubmit={handleCreateFile} className="p-3 bg-slate-950 border-b border-slate-850 space-y-2">
-            <input 
-              type="text"
-              value={newFilename}
-              onChange={(e) => setNewFilename(e.target.value)}
-              placeholder="e.g., app.js, script.js, main.py"
-              className="w-full bg-slate-900 border border-slate-800 rounded-lg px-2.5 py-1.5 text-xs text-slate-200 focus:border-emerald-500 focus:outline-none placeholder-slate-600"
-              autoFocus
-            />
-            {fileError && <p className="text-[10px] text-rose-400">{fileError}</p>}
-            <div className="flex justify-end gap-2 text-[10px]">
-              <button 
-                type="button" 
-                onClick={() => { setShowNewFileDialog(false); setNewFilename(''); }}
-                className="px-2 py-1 text-slate-400 hover:text-slate-200"
-              >
-                Cancel
-              </button>
-              <button 
-                type="submit"
-                className="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-500 text-white rounded font-bold"
-              >
-                Create
-              </button>
-            </div>
-          </form>
-        )}
-
-        {/* Explorer File list */}
-        <div className="flex-1 p-3 overflow-auto space-y-1.5">
-          {loadingFiles ? (
-            <div className="flex justify-center items-center py-10">
-              <Loader2 className="w-5 h-5 text-emerald-500 animate-spin" />
-            </div>
-          ) : (
-            files.map(file => {
-              const isActive = activeFile && activeFile._id === file._id;
-              const isHtml = file.filename.endsWith('.html');
-              const isCss = file.filename.endsWith('.css');
-              const isJs = file.filename.endsWith('.js');
-              const isPy = file.filename.endsWith('.py');
-              
-              let extBg = 'bg-slate-800 text-slate-400';
-              if (isHtml) extBg = 'bg-orange-500/10 text-orange-400';
-              if (isCss) extBg = 'bg-blue-500/10 text-blue-400';
-              if (isJs) extBg = 'bg-yellow-500/10 text-yellow-400';
-              if (isPy) extBg = 'bg-cyan-500/10 text-cyan-400';
-
-              return (
-                <div 
-                  key={file._id}
-                  className={`flex items-center justify-between p-2.5 rounded-xl border text-xs cursor-pointer group transition-all duration-150 min-w-full w-max gap-4 ${
-                    isActive 
-                      ? 'bg-emerald-500/5 border-emerald-500/30 text-emerald-400 font-semibold' 
-                      : 'bg-slate-950/20 border-transparent text-slate-400 hover:bg-slate-900/40 hover:text-slate-200'
-                  }`}
-                  onClick={() => selectFile(file)}
+          {/* Dialog to create file */}
+          {showNewFileDialog && (
+            <form onSubmit={handleCreateFile} className="p-3 bg-slate-950 border-b border-slate-850 space-y-2">
+              <input 
+                type="text"
+                value={newFilename}
+                onChange={(e) => setNewFilename(e.target.value)}
+                placeholder="e.g., app.js, script.js, main.py"
+                className="w-full bg-slate-900 border border-slate-800 rounded-lg px-2.5 py-1.5 text-xs text-slate-200 focus:border-[var(--gold-primary)] focus:outline-none placeholder-slate-650"
+                autoFocus
+              />
+              {fileError && <p className="text-[10px] text-rose-455">{fileError}</p>}
+              <div className="flex justify-end gap-2 text-[10px]">
+                <button 
+                  type="button" 
+                  onClick={() => { setShowNewFileDialog(false); setNewFilename(''); }}
+                  className="px-2 py-1 text-slate-400 hover:text-slate-200 cursor-pointer"
                 >
-                  <div className="flex items-center gap-2.5 whitespace-nowrap">
-                    <span className={`px-1.5 py-0.5 rounded text-[8px] uppercase tracking-wide font-bold ${extBg} shrink-0`}>
-                      {file.filename.split('.').pop()}
-                    </span>
-                    <span>{file.filename}</span>
-                  </div>
+                  Cancel
+                </button>
+                <button 
+                  type="submit"
+                  className="px-2.5 py-1 bg-[var(--gold-primary)] hover:bg-[var(--gold-secondary)] text-slate-950 rounded font-bold transition duration-150 cursor-pointer"
+                >
+                  Create
+                </button>
+              </div>
+            </form>
+          )}
 
-                  <button 
-                    onClick={(e) => { e.stopPropagation(); handleDeleteFile(file._id, file.filename); }}
-                    className="p-1 rounded text-slate-500 hover:text-rose-400 hover:bg-rose-500/10 opacity-0 group-hover:opacity-100 transition-all shrink-0"
+          {/* Explorer File list */}
+          <div className="flex-1 p-3 overflow-auto space-y-1.5">
+            {loadingFiles ? (
+              <div className="flex justify-center items-center py-10">
+                <Loader2 className="w-5 h-5 text-[var(--gold-primary)] animate-spin" />
+              </div>
+            ) : (
+              files.map(file => {
+                const isActive = activeFile && activeFile._id === file._id;
+                const isHtml = file.filename.endsWith('.html');
+                const isCss = file.filename.endsWith('.css');
+                const isJs = file.filename.endsWith('.js');
+                const isPy = file.filename.endsWith('.py');
+                
+                let extBg = 'bg-slate-800 text-slate-400';
+                if (isHtml) extBg = 'bg-orange-500/10 text-orange-400';
+                if (isCss) extBg = 'bg-blue-500/10 text-blue-400';
+                if (isJs) extBg = 'bg-yellow-500/10 text-yellow-400';
+                if (isPy) extBg = 'bg-cyan-500/10 text-cyan-400';
+
+                return (
+                  <div 
+                    key={file._id}
+                    className={`flex items-center justify-between p-2 rounded-lg border text-xs cursor-pointer group transition-all duration-150 min-w-full w-max gap-4 ${
+                      isActive 
+                        ? 'bg-[var(--gold-glow)] border-[var(--gold-primary)]/30 text-[var(--gold-primary)] font-bold shadow-sm' 
+                        : 'bg-slate-950/20 border-transparent text-slate-400 hover:bg-slate-855/45 hover:text-slate-200'
+                    }`}
+                    onClick={() => selectFile(file)}
                   >
-                    <Trash2 className="w-3.5 h-3.5" />
-                  </button>
-                </div>
-              );
-            })
+                    <div className="flex items-center gap-2.5 whitespace-nowrap">
+                      <span className={`px-1.5 py-0.5 rounded text-[8px] uppercase tracking-wide font-bold ${extBg} shrink-0`}>
+                        {file.filename.split('.').pop()}
+                      </span>
+                      <span className="font-medium">{file.filename}</span>
+                    </div>
+
+                    <button 
+                      onClick={(e) => { e.stopPropagation(); handleDeleteFile(file._id, file.filename); }}
+                      className="p-1 rounded text-slate-500 hover:text-rose-455 hover:bg-rose-500/10 opacity-0 group-hover:opacity-100 transition-all shrink-0 cursor-pointer"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                );
+              })
+            )}
+          </div>
+
+          {/* Real-time users typing alerts */}
+          {activeCollaborators.length > 0 && (
+            <div className="p-3 bg-slate-950 border-t border-slate-850 flex items-center gap-2 text-[10px] text-[var(--gold-primary)]">
+              <Users className="w-3.5 h-3.5 animate-pulse text-[var(--gold-primary)]" />
+              <span className="truncate font-medium">{activeCollaborators.join(', ')} typing...</span>
+            </div>
           )}
         </div>
-
-        {/* Real-time users typing alerts */}
-        {activeCollaborators.length > 0 && (
-          <div className="p-3 bg-slate-950 border-t border-slate-850 flex items-center gap-2 text-[10px] text-emerald-400">
-            <Users className="w-3.5 h-3.5 animate-pulse" />
-            <span className="truncate font-medium">{activeCollaborators.join(', ')} typing...</span>
-          </div>
-        )}
-      </div>
+      )}
 
       {/* 2. Editor & Executed Panel Container (Right/Center Split) */}
-      <div className="lg:col-span-3 flex flex-col gap-6">
+      <div className="flex-1 flex flex-col gap-4 overflow-hidden h-full">
         
         {/* Editor Toolbar */}
         <div className="flex justify-between items-center p-3 bg-slate-900/40 border border-slate-800/80 rounded-2xl backdrop-blur-md">
           <div className="flex items-center gap-3">
+            {/* Explorer Toggle Button */}
+            <button 
+              onClick={() => setExplorerCollapsed(!explorerCollapsed)}
+              className="p-2 bg-slate-950 hover:bg-slate-900 border border-slate-850 hover:border-[var(--gold-primary)] text-slate-400 hover:text-white rounded-xl transition cursor-pointer active:scale-95"
+              title={explorerCollapsed ? "Expand Explorer" : "Collapse Explorer"}
+            >
+              {explorerCollapsed ? <ChevronRight className="w-4 h-4 text-[var(--gold-primary)]" /> : <ChevronLeft className="w-4 h-4" />}
+            </button>
+
             <div className="p-2 bg-slate-950 rounded-xl border border-slate-850 text-slate-400">
-              <FileCode className="w-4 h-4 text-emerald-500" />
+              <FileCode className="w-4 h-4 text-[var(--gold-primary)]" />
             </div>
             <div>
               <p className="text-xs font-semibold text-slate-200">{activeFile ? activeFile.filename : 'Workspace'}</p>
@@ -393,10 +481,10 @@ export default function CodeWorkspace({ projectId }) {
             {/* Auto Save indicators */}
             <button 
               onClick={handleSaveFile}
-              className={`p-2 rounded-xl text-xs font-semibold border flex items-center gap-1.5 transition ${
+              className={`p-2 rounded-xl text-xs font-semibold border flex items-center gap-1.5 transition cursor-pointer active:scale-95 ${
                 savingFile 
                   ? 'bg-slate-900 border-slate-800 text-slate-500' 
-                  : 'bg-slate-950 hover:bg-slate-900 border-slate-850 hover:border-slate-800 text-slate-300'
+                  : 'bg-slate-955 hover:bg-slate-900 border-slate-850 hover:border-[var(--gold-primary)] text-slate-300'
               }`}
             >
               {savingFile ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <RefreshCw className="w-3.5 h-3.5" />}
@@ -408,7 +496,7 @@ export default function CodeWorkspace({ projectId }) {
               <button 
                 onClick={handleRunCode}
                 disabled={runningCode}
-                className="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-xl text-xs font-semibold shadow-lg shadow-emerald-950/20 transition flex items-center gap-1.5"
+                className="btn-gold-grad px-4 py-2 rounded-xl text-xs font-semibold shadow-md active:scale-95 transition flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
               >
                 {runningCode ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Play className="w-3.5 h-3.5 fill-current" />}
                 Run Code
@@ -417,14 +505,22 @@ export default function CodeWorkspace({ projectId }) {
           </div>
         </div>
 
-        {/* Coding Area Split Pane */}
-        <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-6 min-h-[350px]">
+        {/* Coding Area Split Pane (Vertical Stack) */}
+        <div className="flex-1 flex flex-col min-h-0 relative border border-slate-800/80 bg-slate-900/40 rounded-2xl overflow-hidden backdrop-blur-md">
           
-          {/* Monaco IDE canvas */}
-          <div className="bg-slate-900/60 border border-slate-800/80 rounded-2xl overflow-hidden backdrop-blur-md relative flex flex-col shadow-inner">
-            <div className="bg-slate-950/50 p-2 border-b border-slate-850 flex justify-between items-center text-[10px] text-slate-500 font-mono">
-              <span>{activeFile ? `EDITOR // ${activeFile.filename}` : 'EDITOR'}</span>
-              <span className="text-emerald-500">Live Sync</span>
+          {/* Monaco IDE canvas (Top Pane) */}
+          <div className="flex-1 min-h-0 bg-slate-900/60 rounded-t-2xl overflow-hidden relative flex flex-col shadow-inner">
+            <div className="bg-slate-950/50 p-3 border-b border-slate-850 flex justify-between items-center text-[10px] text-slate-400 font-mono">
+              <div className="flex items-center gap-1.5 shrink-0">
+                <span className="w-2.5 h-2.5 rounded-full bg-rose-500/85" />
+                <span className="w-2.5 h-2.5 rounded-full bg-amber-500/85" />
+                <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/85" />
+              </div>
+              <span className="font-semibold text-slate-200 truncate px-2">{activeFile ? `EDITOR // ${activeFile.filename}` : 'EDITOR'}</span>
+              <span className="text-emerald-400 font-bold flex items-center gap-1 shrink-0 uppercase tracking-wide text-[9px]">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                Live Sync
+              </span>
             </div>
             
             <div className="flex-1 w-full relative pt-2">
@@ -435,6 +531,28 @@ export default function CodeWorkspace({ projectId }) {
                   value={codeContent}
                   onChange={handleEditorChange}
                   theme={theme === 'light' ? 'light' : 'vs-dark'}
+                  onMount={(editor, monaco) => {
+                    editorRef.current = editor;
+                    
+                    const keyCodeEnter = monaco.KeyCode?.Enter || 13;
+                    const keyCodeS = monaco.KeyCode?.KeyS || monaco.KeyCode?.KEY_S || 83;
+                    
+                    // Ctrl/Cmd + Enter to run code
+                    editor.addCommand(
+                      monaco.KeyMod.CtrlCmd | keyCodeEnter,
+                      () => {
+                        if (runCodeRef.current) runCodeRef.current();
+                      }
+                    );
+
+                    // Ctrl/Cmd + S to save workspace
+                    editor.addCommand(
+                      monaco.KeyMod.CtrlCmd | keyCodeS,
+                      () => {
+                        if (saveWorkspaceRef.current) saveWorkspaceRef.current();
+                      }
+                    );
+                  }}
                   options={{
                     fontSize: 13,
                     minimap: { enabled: false },
@@ -451,68 +569,105 @@ export default function CodeWorkspace({ projectId }) {
                   }}
                 />
               ) : (
-                <div className="flex items-center justify-center h-full text-slate-650 text-xs">
+                <div className="flex items-center justify-center h-full text-slate-655 text-xs">
                   Create or select a file to begin coding.
                 </div>
               )}
             </div>
           </div>
 
-          {/* Console / Output Dock */}
-          <div className="bg-slate-900/60 border border-slate-800/80 rounded-2xl overflow-hidden backdrop-blur-md flex flex-col">
+          {/* Console / Output Dock (Bottom Pullable Panel) */}
+          <div 
+            ref={terminalRef}
+            className={`border-t border-slate-850 flex flex-col bg-slate-950 relative shrink-0 z-10 transition-all duration-150 ${
+              isResizingTerminal ? '' : 'transition-[height]'
+            }`}
+            style={{ height: terminalOpen ? `${terminalHeight}px` : '40px' }}
+          >
+            {/* Resizing Handle */}
+            <div 
+              onMouseDown={startResizingTerminal}
+              className="absolute -top-1 left-0 right-0 h-2 cursor-row-resize bg-transparent hover:bg-[var(--gold-primary)]/50 active:bg-[var(--gold-primary)] transition-colors z-20"
+            />
             
             {/* Terminal vs Iframe Selector */}
-            <div className="flex border-b border-slate-850 bg-slate-950/40 text-[10px] uppercase font-bold tracking-wider font-mono">
-              <button 
-                onClick={() => setActiveTab('terminal')}
-                className={`flex-1 py-3 border-b-2 text-center flex items-center justify-center gap-1.5 transition ${
-                  activeTab === 'terminal' 
-                    ? 'border-emerald-500 text-emerald-400 bg-emerald-500/5' 
-                    : 'border-transparent text-slate-500 hover:text-slate-400 hover:bg-slate-900/20'
-                }`}
-              >
-                <Terminal className="w-3.5 h-3.5" />
-                Terminal Log
-              </button>
+            <div className="flex items-center border-b border-slate-850 bg-slate-950/50 px-3 h-10 select-none w-full">
+              {/* macOS window dots */}
+              <div className="flex items-center gap-1.5 mr-4 shrink-0">
+                <span className="w-2.5 h-2.5 rounded-full bg-slate-800" />
+                <span className="w-2.5 h-2.5 rounded-full bg-slate-800" />
+                <span className="w-2.5 h-2.5 rounded-full bg-slate-800" />
+              </div>
 
-              <button 
-                onClick={() => setActiveTab('preview')}
-                className={`flex-1 py-3 border-b-2 text-center flex items-center justify-center gap-1.5 transition ${
-                  activeTab === 'preview' 
-                    ? 'border-emerald-500 text-emerald-400 bg-emerald-500/5' 
-                    : 'border-transparent text-slate-500 hover:text-slate-400 hover:bg-slate-900/20'
-                }`}
-              >
-                <Eye className="w-3.5 h-3.5" />
-                Live HTML Preview
-              </button>
+              {/* Tabs */}
+              <div className="flex h-full text-[9px] uppercase font-extrabold tracking-wider font-mono">
+                <button 
+                  type="button"
+                  onClick={() => { setActiveTab('terminal'); setTerminalOpen(true); }}
+                  className={`px-4 h-full border-t border-b border-x border-slate-855/60 flex items-center gap-1.5 transition cursor-pointer ${
+                    activeTab === 'terminal' && terminalOpen
+                      ? 'border-t-2 border-t-[var(--gold-primary)] border-b-transparent text-[var(--gold-primary)] bg-slate-950/80' 
+                      : 'border-t-2 border-t-transparent border-b-transparent border-x-transparent text-slate-500 hover:text-slate-350 hover:bg-slate-900/10'
+                  }`}
+                >
+                  <Terminal className="w-3 h-3 shrink-0" />
+                  <span>Terminal Log</span>
+                </button>
+
+                <button 
+                  type="button"
+                  onClick={() => { setActiveTab('preview'); setTerminalOpen(true); }}
+                  className={`px-4 h-full border-t border-b border-x border-slate-855/60 flex items-center gap-1.5 transition cursor-pointer ${
+                    activeTab === 'preview' && terminalOpen
+                      ? 'border-t-2 border-t-[var(--gold-primary)] border-b-transparent text-[var(--gold-primary)] bg-slate-950/80' 
+                      : 'border-t-2 border-t-transparent border-b-transparent border-x-transparent text-slate-500 hover:text-slate-350 hover:bg-slate-900/10'
+                  }`}
+                >
+                  <Eye className="w-3 h-3 shrink-0" />
+                  <span>Live Preview</span>
+                </button>
+              </div>
+
+              {/* Right Tools: Expand / Collapse Pane */}
+              <div className="ml-auto flex items-center gap-1.5">
+                <button
+                  type="button"
+                  onClick={() => setTerminalOpen(!terminalOpen)}
+                  className="p-1.5 rounded-lg bg-slate-900 hover:bg-slate-850 text-slate-400 hover:text-white transition cursor-pointer"
+                  title={terminalOpen ? "Collapse Panel" : "Expand Panel"}
+                >
+                  {terminalOpen ? <ChevronDown className="w-4 h-4" /> : <ChevronUp className="w-4 h-4" />}
+                </button>
+              </div>
             </div>
 
             {/* Tab screen rendering */}
-            <div className="flex-1 relative overflow-hidden bg-slate-950 p-4 font-mono text-xs">
-              
-              {/* Output log */}
-              {activeTab === 'terminal' && (
-                <textarea 
-                  value={terminalOutput}
-                  readOnly
-                  wrap="off"
-                  className="w-full h-full bg-transparent text-slate-350 resize-none font-mono focus:outline-none leading-relaxed border-none whitespace-pre overflow-auto select-text"
-                />
-              )}
-
-              {/* HTML frame renderer */}
-              {activeTab === 'preview' && (
-                <div className="w-full h-full rounded-lg bg-white relative overflow-hidden">
-                  <iframe 
-                    title="Code live sandbox preview"
-                    srcDoc={compileSrcDoc()}
-                    sandbox="allow-scripts"
-                    className="w-full h-full border-none bg-white"
+            {terminalOpen && (
+              <div className="flex-1 relative overflow-hidden bg-slate-950 p-4 font-mono text-xs">
+                
+                {/* Output log */}
+                {activeTab === 'terminal' && (
+                  <textarea 
+                    value={terminalOutput}
+                    readOnly
+                    wrap="off"
+                    className="w-full h-full bg-transparent text-slate-350 resize-none font-mono focus:outline-none leading-relaxed border-none whitespace-pre overflow-auto select-text scrollbar-thin"
                   />
-                </div>
-              )}
-            </div>
+                )}
+
+                {/* HTML frame renderer */}
+                {activeTab === 'preview' && (
+                  <div className="w-full h-full rounded-lg bg-white relative overflow-hidden">
+                    <iframe 
+                      title="Code live sandbox preview"
+                      srcDoc={compileSrcDoc()}
+                      sandbox="allow-scripts"
+                      className="w-full h-full border-none bg-white"
+                    />
+                  </div>
+                )}
+              </div>
+            )}
 
           </div>
 
